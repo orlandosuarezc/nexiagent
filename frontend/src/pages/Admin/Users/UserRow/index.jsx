@@ -20,7 +20,7 @@ export default function UserRow({ currUser, user }) {
   const handleSuspend = async () => {
     if (
       !window.confirm(
-        `Are you sure you want to suspend ${user.username}?\nAfter you do this they will be logged out and unable to log back into this instance of AnythingLLM until unsuspended by an admin.`
+        `¿Suspender a ${user.username}?\nSe cerrará su sesión y no podrá volver a acceder hasta que un administrador lo reactive.`
       )
     )
       return false;
@@ -41,7 +41,7 @@ export default function UserRow({ currUser, user }) {
   const handleDelete = async () => {
     if (
       !window.confirm(
-        `Are you sure you want to delete ${user.username}?\nAfter you do this they will be logged out and unable to use this instance of AnythingLLM.\n\nThis action is irreversible.`
+        `¿Eliminar a ${user.username}?\nSe cerrará su sesión y perderá el acceso permanentemente.\n\nEsta acción no se puede deshacer.`
       )
     )
       return false;

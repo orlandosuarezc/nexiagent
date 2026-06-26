@@ -12,7 +12,7 @@ export default function WorkspaceRow({
   const handleDelete = async () => {
     if (
       !window.confirm(
-        `Are you sure you want to delete ${workspace.name}?\nAfter you do this it will be unavailable in this instance of AnythingLLM.\n\nThis action is irreversible.`
+        `Are you sure you want to delete ${workspace.name}?\nAfter you do this it will be no estará disponible en esta instancia de Nexiagent.\n\nThis action is irreversible.`
       )
     )
       return false;

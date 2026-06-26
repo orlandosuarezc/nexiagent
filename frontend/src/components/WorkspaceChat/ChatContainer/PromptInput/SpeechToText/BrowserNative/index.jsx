@@ -31,7 +31,7 @@ export default function BrowserNativeSTT({ sendCommand }) {
   function startSTTSession() {
     if (!isMicrophoneAvailable) {
       alert(
-        "AnythingLLM does not have access to microphone. Please enable for this site to use this feature."
+        "Nexiagent no tiene acceso al micrófono. Por favor, actívalo para este sitio."
       );
       return;
     }
