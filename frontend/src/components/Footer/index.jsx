@@ -2,7 +2,6 @@ import System from "@/models/system";
 import paths from "@/utils/paths";
 import {
   BookOpen,
-  DiscordLogo,
   GithubLogo,
   Briefcase,
   Envelope,
@@ -20,7 +19,6 @@ import { Link } from "react-router-dom";
 export const MAX_ICONS = 3;
 export const ICON_COMPONENTS = {
   BookOpen: BookOpen,
-  DiscordLogo: DiscordLogo,
   GithubLogo: GithubLogo,
   Envelope: Envelope,
   LinkSimple: LinkSimple,
@@ -73,7 +71,7 @@ export default function Footer() {
               className="transition-all duration-300 p-2 rounded-full bg-theme-sidebar-footer-icon hover:bg-theme-sidebar-footer-icon-hover"
               aria-label="Docs"
               data-tooltip-id="footer-item"
-              data-tooltip-content="Open AnythingLLM help docs"
+              data-tooltip-content="Ayuda de Nexiagent"
             >
               <BookOpen
                 weight="fill"
@@ -83,15 +81,15 @@ export default function Footer() {
           </div>
           <div className="flex w-fit">
             <Link
-              to={paths.discord()}
+              to="https://nexiagent.ailike360.com"
               target="_blank"
               rel="noreferrer"
               className="transition-all duration-300 p-2 rounded-full bg-theme-sidebar-footer-icon hover:bg-theme-sidebar-footer-icon-hover"
-              aria-label="Join our Discord server"
+              aria-label="Web de Nexiagent"
               data-tooltip-id="footer-item"
-              data-tooltip-content="Join the AnythingLLM Discord"
+              data-tooltip-content="Web de Nexiagent"
             >
-              <DiscordLogo
+              <Globe
                 weight="fill"
                 className="h-5 w-5 text-white light:text-slate-800"
               />
