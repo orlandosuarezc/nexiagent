@@ -112,7 +112,7 @@ function TelemetryLogs({ settings }) {
             dedicated to building the best solution for integrating AI and
             documents privately and securely. If you do decide to turn off
             telemetry all we ask is to consider sending us feedback and thoughts
-            so that we can continue to improve AnythingLLM for you.{" "}
+            para poder continuar mejorando Nexiagent para ti.{" "}
             <a
               href="mailto:correo@orlandosuarez.net"
               className="underline text-blue-400"
