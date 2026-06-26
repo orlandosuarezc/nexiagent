@@ -1,19 +1,19 @@
 {
-  "name": "anything-llm",
-  "version": "1.15.0",
-  "description": "The best solution for turning private documents into a chat bot using off-the-shelf tools and commercially viable AI technologies.",
+  "name": "nexiagent",
+  "version": "1.0.0",
+  "description": "Deja de alquilar tu inteligencia. Ponla a trabajar para tus clientes. Nexiagent es una plataforma RAG multicliente donde cada cliente tiene su propio espacio aislado, sube sus documentos y entrena su IA. Tu marca, tu control, tu negocio.",
   "main": "index.js",
   "type": "module",
-  "author": "Timothy Carambat (Mintplex Labs)",
+  "author": "Orlando Suárez",
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/mintplex-labs/anything-llm.git"
+    "url": "git+https://github.com/orlandosuarezc/nexiagent.git"
   },
   "bugs": {
-    "url": "https://github.com/mintplex-labs/anything-llm/issues"
+    "url": "https://github.com/orlandosuarezc/nexiagent/issues"
   },
-  "homepage": "https://github.com/mintplex-labs/anything-llm#readme",
+  "homepage": "https://nexiagent.ailike360.com",
   "engines": {
     "node": ">=18"
   },
