@@ -4,6 +4,7 @@ import Admin from "@/models/admin";
 import { userFromStorage } from "@/utils/request";
 import { MessageLimitInput, RoleHintDisplay } from "..";
 import { useTranslation } from "react-i18next";
+import Toggle from "@/components/lib/Toggle";
 import {
   USERNAME_MIN_LENGTH,
   USERNAME_MAX_LENGTH,
@@ -17,6 +18,7 @@ export default function NewUserModal({ closeModal }) {
     enabled: false,
     limit: 10,
   });
+  const [canUploadDocuments, setCanUploadDocuments] = useState(true);
   const { t } = useTranslation();
 
   const handleCreate = async (e) => {
@@ -26,6 +28,7 @@ export default function NewUserModal({ closeModal }) {
     const form = new FormData(e.target);
     for (var [key, value] of form.entries()) data[key] = value;
     data.dailyMessageLimit = messageLimit.enabled ? messageLimit.limit : null;
+    data.canUploadDocuments = canUploadDocuments;
 
     const { user, error } = await Admin.newUser(data);
     if (!!user) window.location.reload();
@@ -139,6 +142,18 @@ export default function NewUserModal({ closeModal }) {
                 limit={messageLimit.limit}
                 updateState={setMessageLimit}
               />
+              {role === "default" && (
+                <div className="mt-4 mb-4">
+                  <Toggle
+                    size="md"
+                    variant="horizontal"
+                    label="Puede subir documentos"
+                    description="Permite a este usuario subir documentos al gestor de documentos."
+                    enabled={canUploadDocuments}
+                    onChange={(checked) => setCanUploadDocuments(checked)}
+                  />
+                </div>
+              )}
               {error && <p className="text-red-400 text-sm">Error: {error}</p>}
               <p className="text-white text-xs md:text-sm">
                 After creating a user they will need to login with their initial

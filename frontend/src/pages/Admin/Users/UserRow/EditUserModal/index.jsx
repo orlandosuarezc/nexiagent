@@ -4,6 +4,7 @@ import Admin from "@/models/admin";
 import { MessageLimitInput, RoleHintDisplay } from "../..";
 import { AUTH_USER } from "@/utils/constants";
 import { useTranslation } from "react-i18next";
+import Toggle from "@/components/lib/Toggle";
 import {
   USERNAME_MIN_LENGTH,
   USERNAME_MAX_LENGTH,
@@ -17,6 +18,9 @@ export default function EditUserModal({ currentUser, user, closeModal }) {
     enabled: user.dailyMessageLimit !== null,
     limit: user.dailyMessageLimit || 10,
   });
+  const [canUploadDocuments, setCanUploadDocuments] = useState(
+    user.canUploadDocuments ?? true
+  );
   const { t } = useTranslation();
 
   const handleUpdate = async (e) => {
@@ -33,6 +37,8 @@ export default function EditUserModal({ currentUser, user, closeModal }) {
     } else {
       data.dailyMessageLimit = null;
     }
+
+    data.canUploadDocuments = canUploadDocuments;
 
     const { success, error } = await Admin.updateUser(user.id, data);
     if (success) {
@@ -155,6 +161,18 @@ export default function EditUserModal({ currentUser, user, closeModal }) {
                 limit={messageLimit.limit}
                 updateState={setMessageLimit}
               />
+              {role === "default" && (
+                <div className="mt-4 mb-4">
+                  <Toggle
+                    size="md"
+                    variant="horizontal"
+                    label="Puede subir documentos"
+                    description="Permite a este usuario subir documentos al gestor de documentos."
+                    enabled={canUploadDocuments}
+                    onChange={(checked) => setCanUploadDocuments(checked)}
+                  />
+                </div>
+              )}
               {error && <p className="text-red-400 text-sm">Error: {error}</p>}
             </div>
             <div className="flex justify-between items-center mt-6 pt-6 border-t border-theme-modal-border">
