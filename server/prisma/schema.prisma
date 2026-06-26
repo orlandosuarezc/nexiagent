@@ -70,6 +70,7 @@ model users {
   lastUpdatedAt                DateTime                      @default(now())
   dailyMessageLimit            Int?
   bio                          String?                       @default("")
+  canUploadDocuments           Boolean                       @default(true)
   web_push_subscription_config String?
   workspace_chats              workspace_chats[]
   workspace_users              workspace_users[]

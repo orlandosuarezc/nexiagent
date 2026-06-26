@@ -11,6 +11,7 @@ const { EventLogs } = require("./eventLogs");
  * @property {string} role
  * @property {boolean} suspended
  * @property {number|null} dailyMessageLimit
+ * @property {boolean} canUploadDocuments
  */
 
 const User = {
@@ -24,14 +25,9 @@ const User = {
     "suspended",
     "dailyMessageLimit",
     "bio",
+    "canUploadDocuments",
   ],
   validations: {
-    /**
-     * Unix-style username regex:
-     * - Must start with a lowercase letter
-     * - Can contain lowercase letters, digits, underscores, hyphens, @ signs, and periods
-     * - 2-64 characters long
-     */
     username: (newValue = "") => {
       try {
         const username = String(newValue);
@@ -73,14 +69,18 @@ const User = {
         throw new Error("Bio cannot be longer than 1,000 characters");
       return String(bio);
     },
+    canUploadDocuments: (value = true) => {
+      return Boolean(value);
+    },
   },
-  // validations for the above writable fields.
   castColumnValue: function (key, value) {
     switch (key) {
       case "suspended":
         return Number(Boolean(value));
       case "dailyMessageLimit":
         return value === null ? null : Number(value);
+      case "canUploadDocuments":
+        return Boolean(value);
       default:
         return String(value);
     }
@@ -96,7 +96,6 @@ const User = {
   },
   _identifyErrorAndFormatMessage: function (error) {
     if (error instanceof Prisma.PrismaClientKnownRequestError) {
-      // P2002 is the unique constraint violation error code
       if (error.code === "P2002") {
         const target = error.meta?.target;
         return `A user with that ${target?.join(", ")} already exists`;
@@ -111,6 +110,7 @@ const User = {
     role = "default",
     dailyMessageLimit = null,
     bio = "",
+    canUploadDocuments = true,
   }) {
     const passwordCheck = this.checkPasswordComplexity(password);
     if (!passwordCheck.checkedOK) {
@@ -118,7 +118,6 @@ const User = {
     }
 
     try {
-      // Validate username format (validation function handles all checks)
       const validatedUsername = this.validations.username(username);
 
       const bcrypt = require("bcryptjs");
@@ -131,6 +130,7 @@ const User = {
           bio: this.validations.bio(bio),
           dailyMessageLimit:
             this.validations.dailyMessageLimit(dailyMessageLimit),
+          canUploadDocuments: this.validations.canUploadDocuments(canUploadDocuments),
         },
       });
       return { user: this.filterFields(user), error: null };
@@ -139,8 +139,7 @@ const User = {
       return { user: null, error: this._identifyErrorAndFormatMessage(error) };
     }
   },
-  // Log the changes to a user object, but omit sensitive fields
-  // that are not meant to be logged.
+
   loggedChanges: function (updates, prev = {}) {
     const changes = {};
     const sensitiveFields = ["password"];
@@ -162,15 +161,10 @@ const User = {
       });
       if (!currentUser) return { success: false, error: "User not found" };
 
-      // We previously had more lenient username validation, but now with more strict validation
-      // we dont want to break existing users by changing non-username fields.
-      // If they are not explictly changing the username, do not attempt to validate it.
       if (updates.hasOwnProperty("username")) {
         if (updates.username === currentUser.username) delete updates.username;
       }
 
-      // Removes non-writable fields for generic updates
-      // and force-casts to the proper type;
       Object.entries(updates).forEach(([key, value]) => {
         if (this.writable.includes(key)) {
           if (this.validations.hasOwnProperty(key)) {
@@ -188,7 +182,6 @@ const User = {
       if (Object.keys(updates).length === 0)
         return { success: false, error: "No valid updates applied." };
 
-      // Handle password specific updates
       if (updates.hasOwnProperty("password")) {
         const passwordCheck = this.checkPasswordComplexity(updates.password);
         if (!passwordCheck.checkedOK) {
@@ -221,14 +214,6 @@ const User = {
     }
   },
 
-  /**
-   * Explicit direct update of user object.
-   * Only use this method when directly setting a key value
-   * that takes no user input for the keys being modified.
-   * @param {number} id - The id of the user to update.
-   * @param {Object} data - The data to update the user with.
-   * @returns {Promise<Object>} The updated user object.
-   */
   _update: async function (id = null, data = {}) {
     if (!id) throw new Error("No user id provided for update");
 
@@ -244,13 +229,6 @@ const User = {
     }
   },
 
-  /**
-   * Get all users that match the given clause without filtering the fields.
-   * Internal use only - do not use this method for user-input flows
-   * @param {Object} clause - The clause to filter the users by.
-   * @param {number|null} limit - The maximum number of users to return.
-   * @returns {Promise<Array<User>>} The users that match the given clause.
-   */
   _where: async function (clause = {}, limit = null) {
     try {
       const users = await prisma.users.findMany({
@@ -264,11 +242,6 @@ const User = {
     }
   },
 
-  /**
-   * Returns a user object based on the clause provided.
-   * @param {Object} clause - The clause to use to find the user.
-   * @returns {Promise<import("@prisma/client").users|null>} The user object or null if not found.
-   */
   get: async function (clause = {}) {
     try {
       const user = await prisma.users.findFirst({ where: clause });
@@ -278,7 +251,7 @@ const User = {
       return null;
     }
   },
-  // Returns user object with all fields
+
   _get: async function (clause = {}) {
     try {
       const user = await prisma.users.findFirst({ where: clause });
@@ -324,8 +297,6 @@ const User = {
 
   checkPasswordComplexity: function (passwordInput = "") {
     const passwordComplexity = require("joi-password-complexity");
-    // Can be set via ENV variable on boot. No frontend config at this time.
-    // Docs: https://www.npmjs.com/package/joi-password-complexity
     const complexityOptions = {
       min: process.env.PASSWORDMINCHAR || 8,
       max: process.env.PASSWORDMAXCHAR || 250,
@@ -333,7 +304,6 @@ const User = {
       upperCase: process.env.PASSWORDUPPERCASE || 0,
       numeric: process.env.PASSWORDNUMERIC || 0,
       symbol: process.env.PASSWORDSYMBOL || 0,
-      // reqCount should be equal to how many conditions you are testing for (1-4)
       requirementCount: process.env.PASSWORDREQUIREMENTS || 0,
     };
 
@@ -354,13 +324,6 @@ const User = {
     return { checkedOK: true, error: "No error." };
   },
 
-  /**
-   * Check if a user can send a chat based on their daily message limit.
-   * This limit is system wide and not per workspace and only applies to
-   * multi-user mode AND non-admin users.
-   * @param {User} user The user object record.
-   * @returns {Promise<boolean>} True if the user can send a chat, false otherwise.
-   */
   canSendChat: async function (user) {
     const { ROLES } = require("../utils/middleware/multiUserProtected");
     if (!user || user.dailyMessageLimit === null || user.role === ROLES.admin)
@@ -370,7 +333,7 @@ const User = {
     const currentChatCount = await WorkspaceChats.count({
       user_id: user.id,
       createdAt: {
-        gte: new Date(new Date() - 24 * 60 * 60 * 1000), // 24 hours
+        gte: new Date(new Date() - 24 * 60 * 60 * 1000),
       },
     });
 
