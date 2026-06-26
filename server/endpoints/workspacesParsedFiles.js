@@ -5,6 +5,7 @@ const { Telemetry } = require("../models/telemetry");
 const {
   flexUserRoleValid,
   ROLES,
+  canUploadDocuments,
 } = require("../utils/middleware/multiUserProtected");
 const { EventLogs } = require("../models/eventLogs");
 const { validWorkspaceSlug } = require("../utils/middleware/validWorkspace");
@@ -122,7 +123,7 @@ function workspaceParsedFilesEndpoints(app) {
     "/workspace/:slug/parse",
     [
       validatedRequest,
-      flexUserRoleValid([ROLES.all]),
+      canUploadDocuments,
       handleFileUpload,
       validWorkspaceSlug,
     ],

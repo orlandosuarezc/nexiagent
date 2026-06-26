@@ -18,6 +18,7 @@ const { Telemetry } = require("../models/telemetry");
 const {
   flexUserRoleValid,
   ROLES,
+  canUploadDocuments,
 } = require("../utils/middleware/multiUserProtected");
 const { EventLogs } = require("../models/eventLogs");
 const {
@@ -116,7 +117,7 @@ function workspaceEndpoints(app) {
     "/workspace/:slug/upload",
     [
       validatedRequest,
-      flexUserRoleValid([ROLES.admin, ROLES.manager]),
+      canUploadDocuments,
       handleFileUpload,
     ],
     async function (request, response) {
@@ -164,7 +165,7 @@ function workspaceEndpoints(app) {
 
   app.post(
     "/workspace/:slug/upload-link",
-    [validatedRequest, flexUserRoleValid([ROLES.admin, ROLES.manager])],
+    [validatedRequest, canUploadDocuments],
     async (request, response) => {
       try {
         const Collector = new CollectorApi();
@@ -906,7 +907,7 @@ function workspaceEndpoints(app) {
     "/workspace/:slug/upload-and-embed",
     [
       validatedRequest,
-      flexUserRoleValid([ROLES.admin, ROLES.manager]),
+      canUploadDocuments,
       handleFileUpload,
     ],
     async function (request, response) {
