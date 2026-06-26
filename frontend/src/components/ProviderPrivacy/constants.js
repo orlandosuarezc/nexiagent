@@ -309,7 +309,7 @@ const VECTOR_DB_PROVIDER_PRIVACY_MAP = {
   lancedb: {
     name: "LanceDB",
     description: [
-      "Your vectors and document text are stored privately on this instance of AnythingLLM.",
+      "Tus vectores y texto de documentos se almacenan de forma privada en esta instancia de Nexiagent.",
     ],
     logo: LanceDbLogo,
   },
@@ -317,9 +317,9 @@ const VECTOR_DB_PROVIDER_PRIVACY_MAP = {
 
 const EMBEDDING_ENGINE_PROVIDER_PRIVACY_MAP = {
   native: {
-    name: "AnythingLLM Embedder",
+    name: "Nexiagent Embedder",
     description: [
-      "Your document text is embedded privately on this instance of AnythingLLM.",
+      "El texto de tus documentos se incrusta de forma privada en esta instancia de Nexiagent.",
     ],
     logo: AnythingLLMIcon,
   },
