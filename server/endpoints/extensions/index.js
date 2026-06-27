@@ -195,4 +195,4 @@ function extensionEndpoints(app) {
   );
 }
 
-module.exports = { 
+module.exports = { extensionEndpoints };
