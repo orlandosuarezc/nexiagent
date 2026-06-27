@@ -155,7 +155,7 @@ export default function ActiveWorkspaces() {
                                 </p>
                               </div>
                             </div>
-                            {user?.role !== "default" && (
+                            {(user?.role !== "default" || user?.canUploadDocuments === true) && (
                               <div
                                 className={`flex items-center gap-x-[2px] transition-opacity duration-200 ${isActive ? "opacity-100" : "opacity-0 group-hover:opacity-100"}`}
                               >
@@ -174,6 +174,12 @@ export default function ActiveWorkspaces() {
                                     className={`h-[20px] w-[20px] ${isActive ? "text-zinc-400 hover:text-white light:text-blue-700 light:group-hover/upload:text-blue-900" : "text-zinc-400 hover:text-white light:text-slate-600 light:group-hover/upload:text-slate-950"}`}
                                   />
                                 </button>
+                              </div>
+                            )}
+                            {user?.role !== "default" && (
+                              <div
+                                className={`flex items-center gap-x-[2px] transition-opacity duration-200 ${isActive ? "opacity-100" : "opacity-0 group-hover:opacity-100"}`}
+                              >
                                 <button
                                   onClick={(e) => {
                                     e.preventDefault();
