@@ -995,7 +995,7 @@ function workspaceEndpoints(app) {
     "/workspace/:slug/remove-and-unembed",
     [
       validatedRequest,
-      flexUserRoleValid([ROLES.admin, ROLES.manager]),
+      canUploadDocuments,
       handleFileUpload,
     ],
     async function (request, response) {
@@ -1108,7 +1108,7 @@ function workspaceEndpoints(app) {
     "/workspace/:slug/embed-progress",
     [
       validatedRequest,
-      flexUserRoleValid([ROLES.admin, ROLES.manager]),
+      canUploadDocuments,
       validWorkspaceSlug,
     ],
     async (request, response) => {
@@ -1139,7 +1139,7 @@ function workspaceEndpoints(app) {
     "/workspace/:slug/embed-queue",
     [
       validatedRequest,
-      flexUserRoleValid([ROLES.admin, ROLES.manager]),
+      canUploadDocuments,
       validWorkspaceSlug,
     ],
     async (request, response) => {
