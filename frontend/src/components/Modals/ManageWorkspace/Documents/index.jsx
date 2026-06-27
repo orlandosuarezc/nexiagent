@@ -56,11 +56,29 @@ export default function DocumentSettings({ workspace }) {
       currentWorkspace.documents.map((doc) => doc.docpath) || [];
 
     // Documents that are not in the workspace.
-    // Default users cannot browse the global library — they can only upload
-    // new files. Show them a completely empty available-docs panel (no folders).
+    // Default users see only documents belonging to their current workspace
+    // (not the full global library). Admin/manager see all unembedded docs.
     const filteredAvailableDocs =
       user?.role === "default"
-        ? { ...localFiles, items: [] }
+        ? {
+            ...localFiles,
+            items: localFiles.items.map((folder) => {
+              if (folder.items && folder.type === "folder") {
+                return {
+                  ...folder,
+                  items: folder.items.filter(
+                    (file) =>
+                      file.type === "file" &&
+                      documentsInWorkspace.includes(
+                        `${folder.name}/${file.name}`
+                      )
+                  ),
+                };
+              } else {
+                return folder;
+              }
+            }),
+          }
         : {
             ...localFiles,
             items: localFiles.items.map((folder) => {
