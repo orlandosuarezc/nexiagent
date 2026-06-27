@@ -40,6 +40,13 @@ async function fileData(filePath = null) {
  */
 async function viewLocalFiles(allowedDocpaths = null) {
   if (!fs.existsSync(documentsPath)) fs.mkdirSync(documentsPath);
+
+  // Empty Set = default user with no uploaded documents yet.
+  // Return an empty directory immediately — do NOT reveal folder names of other clients.
+  if (allowedDocpaths !== null && allowedDocpaths.size === 0) {
+    return { name: "documents", type: "folder", items: [] };
+  }
+
   const liveSyncAvailable = await DocumentSyncQueue.enabled();
   const directory = {
     name: "documents",
