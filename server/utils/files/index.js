@@ -90,6 +90,10 @@ async function viewLocalFiles(allowedDocpaths = null) {
         .then((results) => results.filter((i) => hasRequiredMetadata(i))); // Remove invalid file structures
       subdocs.items.push(...results);
 
+      // When an allowlist is active, skip folders that ended up with no visible files.
+      // Without this, folders belonging to other users appear as empty entries.
+      if (allowedDocpaths !== null && subdocs.items.length === 0) continue;
+
       // Grab the pinned workspaces and watched documents for this folder's documents
       // at the time of the query so we don't have to re-query the database for each file
       const pinnedWorkspacesByDocument =

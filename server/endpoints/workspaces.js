@@ -968,6 +968,13 @@ function workspaceEndpoints(app) {
         );
 
         const document = documents[0];
+
+        // Track ownership so default-role users can see this file in their panel.
+        const uploadUserId = response.locals?.user?.id;
+        if (uploadUserId && document?.location) {
+          await DocumentUpload.create(uploadUserId, document.location);
+        }
+
         const { failedToEmbed = [], errors = [] } = await Document.addDocuments(
           currWorkspace,
           [document.location],
