@@ -9,9 +9,9 @@ import { useWorkspaceEmbeddingProgress } from "@/EmbeddingProgressContext";
 
 export default function DocumentSettings({ workspace }) {
   const [highlightWorkspace, setHighlightWorkspace] = useState(false);
-  const [availableDocs, setAvailableDocs] = useState([]);
+  const [availableDocs, setAvailableDocs] = useState({ items: [] });
   const [loading, setLoading] = useState(true);
-  const [workspaceDocs, setWorkspaceDocs] = useState([]);
+  const [workspaceDocs, setWorkspaceDocs] = useState({ items: [] });
   const [selectedItems, setSelectedItems] = useState({});
   const [hasChanges, setHasChanges] = useState(false);
   const [movedItems, setMovedItems] = useState([]);
@@ -42,6 +42,10 @@ export default function DocumentSettings({ workspace }) {
     }
     setLoading(true);
     const localFiles = await System.localFiles();
+    if (!localFiles) {
+      setLoading(false);
+      return;
+    }
     const currentWorkspace = refetchWorkspace
       ? await Workspace.bySlug(workspace.slug)
       : workspace;

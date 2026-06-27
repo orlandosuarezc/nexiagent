@@ -41,6 +41,7 @@ const {
   flexUserRoleValid,
   ROLES,
   isMultiUserSetup,
+  canUploadDocuments,
 } = require("../utils/middleware/multiUserProtected");
 const { fetchPfp, determinePfpFilepath } = require("../utils/files/pfp");
 const { exportChatsAsType } = require("../utils/helpers/chat/convertTo");
@@ -496,7 +497,7 @@ function systemEndpoints(app) {
 
   app.get(
     "/system/local-files",
-    [validatedRequest, flexUserRoleValid([ROLES.admin, ROLES.manager])],
+    [validatedRequest, canUploadDocuments],
     async (_, response) => {
       try {
         const localFiles = await viewLocalFiles();
