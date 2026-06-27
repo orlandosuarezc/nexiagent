@@ -11,6 +11,7 @@ const { Workspace } = require("../models/workspace");
 const { Document } = require("../models/documents");
 const { DocumentVectors } = require("../models/vectors");
 const { WorkspaceChats } = require("../models/workspaceChats");
+const { DocumentUpload } = require("../models/documentUpload");
 const { getVectorDbClass, stripThinkingFromText } = require("../utils/helpers");
 const { handleFileUpload, handlePfpUpload } = require("../utils/files/multer");
 const { validatedRequest } = require("../utils/middleware/validatedRequest");
@@ -137,7 +138,7 @@ function workspaceEndpoints(app) {
           return;
         }
 
-        const { success, reason } =
+        const { success, reason, documents } =
           await Collector.processDocument(originalname);
         if (!success) {
           response.status(500).json({ success: false, error: reason }).end();
@@ -148,13 +149,19 @@ function workspaceEndpoints(app) {
           `Document ${originalname} uploaded processed and successfully. It is now available in documents.`
         );
         await Telemetry.sendTelemetry("document_uploaded");
+        const userId = response.locals?.user?.id;
         await EventLogs.logEvent(
           "document_uploaded",
-          {
-            documentName: originalname,
-          },
-          response.locals?.user?.id
+          { documentName: originalname },
+          userId
         );
+        // Track document ownership so default-role users only see their own files.
+        if (userId && documents?.length > 0) {
+          for (const doc of documents) {
+            if (doc?.location)
+              await DocumentUpload.create(userId, doc.location);
+          }
+        }
         response.status(200).json({ success: true, error: null });
       } catch (e) {
         console.error(e.message, e);
@@ -183,7 +190,7 @@ function workspaceEndpoints(app) {
           return;
         }
 
-        const { success, reason } = await Collector.processLink(link);
+        const { success, reason, documents } = await Collector.processLink(link);
         if (!success) {
           response.status(500).json({ success: false, error: reason }).end();
           return;
@@ -193,11 +200,14 @@ function workspaceEndpoints(app) {
           `Link ${link} uploaded processed and successfully. It is now available in documents.`
         );
         await Telemetry.sendTelemetry("link_uploaded");
-        await EventLogs.logEvent(
-          "link_uploaded",
-          { link },
-          response.locals?.user?.id
-        );
+        const userId = response.locals?.user?.id;
+        await EventLogs.logEvent("link_uploaded", { link }, userId);
+        if (userId && documents?.length > 0) {
+          for (const doc of documents) {
+            if (doc?.location)
+              await DocumentUpload.create(userId, doc.location);
+          }
+        }
         response.status(200).json({ success: true, error: null });
       } catch (e) {
         console.error(e.message, e);

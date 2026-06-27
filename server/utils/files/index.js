@@ -32,7 +32,13 @@ async function fileData(filePath = null) {
   return JSON.parse(data);
 }
 
-async function viewLocalFiles() {
+/**
+ * Returns all local document files visible to the caller.
+ * @param {Set<string>|null} allowedDocpaths - When provided (for default-role users),
+ *   only files whose cachefilename (e.g. "custom-documents/file.json") is in this Set
+ *   are included. Pass null to return all files (admin / manager behaviour).
+ */
+async function viewLocalFiles(allowedDocpaths = null) {
   if (!fs.existsSync(documentsPath)) fs.mkdirSync(documentsPath);
   const liveSyncAvailable = await DocumentSyncQueue.enabled();
   const directory = {
@@ -60,6 +66,9 @@ async function viewLocalFiles() {
         const subfile = subfiles[i];
         const cachefilename = `${file}/${subfile}`;
         if (path.extname(subfile) !== ".json") continue;
+        // If a docpath allowlist is active, skip files not owned by the user.
+        if (allowedDocpaths !== null && !allowedDocpaths.has(cachefilename))
+          continue;
         filePromises.push(
           fileToPickerData({
             pathToFile: path.join(folderPath, subfile),

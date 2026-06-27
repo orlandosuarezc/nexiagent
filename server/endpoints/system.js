@@ -44,6 +44,7 @@ const {
   canUploadDocuments,
 } = require("../utils/middleware/multiUserProtected");
 const { fetchPfp, determinePfpFilepath } = require("../utils/files/pfp");
+const { DocumentUpload } = require("../models/documentUpload");
 const { exportChatsAsType } = require("../utils/helpers/chat/convertTo");
 const { EventLogs } = require("../models/eventLogs");
 const { CollectorApi } = require("../utils/collectorApi");
@@ -500,7 +501,15 @@ function systemEndpoints(app) {
     [validatedRequest, canUploadDocuments],
     async (_, response) => {
       try {
-        const localFiles = await viewLocalFiles();
+        const user = response.locals?.user;
+        // Default-role users only see their own uploaded/scraped documents.
+        // Admin and manager always see all files (allowedDocpaths = null).
+        let allowedDocpaths = null;
+        if (user?.role === "default") {
+          const docpaths = await DocumentUpload.forUser(user.id);
+          allowedDocpaths = new Set(docpaths);
+        }
+        const localFiles = await viewLocalFiles(allowedDocpaths);
         response.status(200).json({ localFiles });
       } catch (e) {
         console.error(e.message, e);

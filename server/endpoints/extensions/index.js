@@ -9,6 +9,7 @@ const { validatedRequest } = require("../../utils/middleware/validatedRequest");
 const {
   isSupportedRepoProvider,
 } = require("../../utils/middleware/isSupportedRepoProviders");
+const { DocumentUpload } = require("../../models/documentUpload");
 
 function extensionEndpoints(app) {
   if (!app) return;
@@ -121,6 +122,17 @@ function extensionEndpoints(app) {
         await Telemetry.sendTelemetry("extension_invoked", {
           type: "website_depth",
         });
+        // Track document ownership for default-role users.
+        // website-depth collector returns { success, data: [...] } where each
+        // item has a .location field (docpath).
+        const userId = response.locals?.user?.id;
+        const scrapedDocs = responseFromProcessor?.data ?? responseFromProcessor?.documents ?? [];
+        if (userId && scrapedDocs.length > 0) {
+          for (const doc of scrapedDocs) {
+            if (doc?.location)
+              await DocumentUpload.create(userId, doc.location);
+          }
+        }
         response.status(200).json(responseFromProcessor);
       } catch (e) {
         console.error(e);

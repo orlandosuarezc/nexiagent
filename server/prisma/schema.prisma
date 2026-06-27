@@ -88,6 +88,18 @@ model users {
   desktop_mobile_devices       desktop_mobile_devices[]
   workspace_parsed_files       workspace_parsed_files[]
   memories                     memories[]
+  document_uploads             document_uploads[]
+}
+
+model document_uploads {
+  id        Int      @id @default(autoincrement())
+  docpath   String
+  userId    Int
+  createdAt DateTime @default(now())
+  user      users    @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@index([docpath])
 }
 
 model recovery_codes {
