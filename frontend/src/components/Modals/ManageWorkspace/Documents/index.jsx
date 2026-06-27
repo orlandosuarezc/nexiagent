@@ -57,10 +57,10 @@ export default function DocumentSettings({ workspace }) {
 
     // Documents that are not in the workspace.
     // Default users cannot browse the global library — they can only upload
-    // new files. Show them an empty available-docs panel.
+    // new files. Show them a completely empty available-docs panel (no folders).
     const filteredAvailableDocs =
       user?.role === "default"
-        ? { ...localFiles, items: localFiles.items.map((f) => ({ ...f, items: [] })) }
+        ? { ...localFiles, items: [] }
         : {
             ...localFiles,
             items: localFiles.items.map((folder) => {

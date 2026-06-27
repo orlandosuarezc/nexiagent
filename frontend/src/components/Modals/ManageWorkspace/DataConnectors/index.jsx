@@ -63,15 +63,23 @@ export const getDataConnectors = (t) => ({
   },
 });
 
-export default function DataConnectors() {
+const DEFAULT_USER_CONNECTORS = ["website-depth"];
+
+export default function DataConnectors({ userRole = null }) {
   const { t } = useTranslation();
-  const [selectedConnector, setSelectedConnector] = useState("github");
+  const [selectedConnector, setSelectedConnector] = useState(
+    userRole === "default" ? "website-depth" : "github"
+  );
   const [searchQuery, setSearchQuery] = useState("");
   const DATA_CONNECTORS = getDataConnectors(t);
 
-  const filteredConnectors = Object.keys(DATA_CONNECTORS).filter((slug) =>
-    DATA_CONNECTORS[slug].name.toLowerCase().includes(searchQuery.toLowerCase())
-  );
+  const filteredConnectors = Object.keys(DATA_CONNECTORS).filter((slug) => {
+    if (userRole === "default" && !DEFAULT_USER_CONNECTORS.includes(slug))
+      return false;
+    return DATA_CONNECTORS[slug].name
+      .toLowerCase()
+      .includes(searchQuery.toLowerCase());
+  });
 
   return (
     <div className="flex upload-modal -mt-10 relative min-h-[80vh] w-[70vw]">

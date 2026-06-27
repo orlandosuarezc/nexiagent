@@ -95,19 +95,17 @@ const ManageWorkspace = ({ hideModal = noop, providedSlug = null }) => {
             </button>
           </div>
 
-          {user?.role !== "default" && (
-            <ModalTabSwitcher
-              selectedTab={selectedTab}
-              setSelectedTab={setSelectedTab}
-            />
-          )}
+          <ModalTabSwitcher
+            selectedTab={selectedTab}
+            setSelectedTab={setSelectedTab}
+          />
 
           {selectedTab === "documents" ? (
             <EmbeddingProgressProvider>
               <DocumentSettings workspace={workspace} />
             </EmbeddingProgressProvider>
           ) : (
-            <DataConnectors workspace={workspace} systemSettings={settings} />
+            <DataConnectors workspace={workspace} systemSettings={settings} userRole={user?.role} />
           )}
         </div>
       </div>
