@@ -152,7 +152,7 @@ export function useManageWorkspaceModal() {
   const [showing, setShowing] = useState(false);
 
   function showModal() {
-    if (user?.role !== "default") {
+    if (user?.role !== "default" || user?.canUploadDocuments === true) {
       setShowing(true);
     }
   }
