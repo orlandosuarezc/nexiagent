@@ -3,6 +3,7 @@ const { CollectorApi } = require("../../utils/collectorApi");
 const {
   flexUserRoleValid,
   ROLES,
+  canUploadDocuments,
 } = require("../../utils/middleware/multiUserProtected");
 const { validatedRequest } = require("../../utils/middleware/validatedRequest");
 const {
@@ -108,7 +109,7 @@ function extensionEndpoints(app) {
   );
   app.post(
     "/ext/website-depth",
-    [validatedRequest, flexUserRoleValid([ROLES.admin, ROLES.manager])],
+    [validatedRequest, canUploadDocuments],
     async (request, response) => {
       try {
         const responseFromProcessor =
@@ -194,4 +195,4 @@ function extensionEndpoints(app) {
   );
 }
 
-module.exports = { extensionEndpoints };
+module.exports = { 
