@@ -56,48 +56,31 @@ export default function DocumentSettings({ workspace }) {
       currentWorkspace.documents.map((doc) => doc.docpath) || [];
 
     // Documents that are not in the workspace.
-    // Default users see only documents belonging to their current workspace
-    // (not the full global library). Admin/manager see all unembedded docs.
-    const filteredAvailableDocs =
-      user?.role === "default"
-        ? {
-            ...localFiles,
-            items: localFiles.items.map((folder) => {
-              if (folder.items && folder.type === "folder") {
-                return {
-                  ...folder,
-                  items: folder.items.filter(
-                    (file) =>
-                      file.type === "file" &&
-                      documentsInWorkspace.includes(
-                        `${folder.name}/${file.name}`
-                      )
-                  ),
-                };
-              } else {
-                return folder;
-              }
-            }),
+    // Default users only see folders whose name contains the current workspace
+    // slug — this hides other clients' document folders. Admin/manager see all.
+    const filteredAvailableDocs = {
+      ...localFiles,
+      items: localFiles.items
+        .filter((folder) =>
+          user?.role === "default"
+            ? folder.name.includes(workspace.slug)
+            : true
+        )
+        .map((folder) => {
+          if (folder.items && folder.type === "folder") {
+            return {
+              ...folder,
+              items: folder.items.filter(
+                (file) =>
+                  file.type === "file" &&
+                  !documentsInWorkspace.includes(`${folder.name}/${file.name}`)
+              ),
+            };
+          } else {
+            return folder;
           }
-        : {
-            ...localFiles,
-            items: localFiles.items.map((folder) => {
-              if (folder.items && folder.type === "folder") {
-                return {
-                  ...folder,
-                  items: folder.items.filter(
-                    (file) =>
-                      file.type === "file" &&
-                      !documentsInWorkspace.includes(
-                        `${folder.name}/${file.name}`
-                      )
-                  ),
-                };
-              } else {
-                return folder;
-              }
-            }),
-          };
+        }),
+    };
 
     // Documents that are already in the workspace
     const filteredWorkspaceDocs = {
