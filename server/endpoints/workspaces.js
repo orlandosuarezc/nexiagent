@@ -218,7 +218,7 @@ function workspaceEndpoints(app) {
 
   app.post(
     "/workspace/:slug/update-embeddings",
-    [validatedRequest, flexUserRoleValid([ROLES.admin, ROLES.manager])],
+    [validatedRequest, canUploadDocuments],
     async (request, response) => {
       try {
         const user = await userFromSession(request, response);
