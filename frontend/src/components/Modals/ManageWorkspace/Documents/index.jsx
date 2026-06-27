@@ -6,8 +6,10 @@ import showToast from "../../../../utils/toast";
 import Directory from "./Directory";
 import WorkspaceDirectory from "./WorkspaceDirectory";
 import { useWorkspaceEmbeddingProgress } from "@/EmbeddingProgressContext";
+import useUser from "@/hooks/useUser";
 
 export default function DocumentSettings({ workspace }) {
+  const { user } = useUser();
   const [highlightWorkspace, setHighlightWorkspace] = useState(false);
   const [availableDocs, setAvailableDocs] = useState({ items: [] });
   const [loading, setLoading] = useState(true);
@@ -53,24 +55,31 @@ export default function DocumentSettings({ workspace }) {
     const documentsInWorkspace =
       currentWorkspace.documents.map((doc) => doc.docpath) || [];
 
-    // Documents that are not in the workspace
-    const filteredAvailableDocs = {
-      ...localFiles,
-      items: localFiles.items.map((folder) => {
-        if (folder.items && folder.type === "folder") {
-          return {
-            ...folder,
-            items: folder.items.filter(
-              (file) =>
-                file.type === "file" &&
-                !documentsInWorkspace.includes(`${folder.name}/${file.name}`)
-            ),
+    // Documents that are not in the workspace.
+    // Default users cannot browse the global library — they can only upload
+    // new files. Show them an empty available-docs panel.
+    const filteredAvailableDocs =
+      user?.role === "default"
+        ? { ...localFiles, items: localFiles.items.map((f) => ({ ...f, items: [] })) }
+        : {
+            ...localFiles,
+            items: localFiles.items.map((folder) => {
+              if (folder.items && folder.type === "folder") {
+                return {
+                  ...folder,
+                  items: folder.items.filter(
+                    (file) =>
+                      file.type === "file" &&
+                      !documentsInWorkspace.includes(
+                        `${folder.name}/${file.name}`
+                      )
+                  ),
+                };
+              } else {
+                return folder;
+              }
+            }),
           };
-        } else {
-          return folder;
-        }
-      }),
-    };
 
     // Documents that are already in the workspace
     const filteredWorkspaceDocs = {
