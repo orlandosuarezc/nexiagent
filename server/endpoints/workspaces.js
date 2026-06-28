@@ -157,7 +157,6 @@ function workspaceEndpoints(app) {
           userId
         );
 
-        console.log(`[upload] userId=${userId} role=${userRole} documents=${JSON.stringify(documents?.map(d => ({ location: d?.location, id: d?.id })))}`);
         // For default-role users: move uploaded files to a personal folder
         // (uploads-{userId}) instead of leaving them in the shared custom-documents.
         if (userId && userRole === "default" && documents?.length > 0) {
@@ -176,14 +175,15 @@ function workspaceEndpoints(app) {
             const destRelative = `${personalFolder}/${filename}`;
             const destPath = path.join(documentsPath, destRelative);
 
-            console.log(`[upload:move] src=${srcPath} dest=${destPath} srcExists=${fs.existsSync(srcPath)}`);
             try {
-              fs.renameSync(srcPath, destPath);
-              doc.location = destRelative; // update in-memory so callers see the new path
-              console.log(`[upload:move] OK → ${destRelative}`);
+              // Use copy+delete instead of rename to support cross-device moves
+              // (renameSync fails with EXDEV when src and dest are on different Docker volumes)
+              fs.copyFileSync(srcPath, destPath);
+              fs.unlinkSync(srcPath);
+              doc.location = destRelative;
             } catch (moveErr) {
-              console.error(`[upload:move] FAILED code=${moveErr.code} msg=${moveErr.message} src=${srcPath} dest=${destPath}`);
-              // Keep original location if move fails
+              console.error(`[upload] Failed to move file to personal folder: ${moveErr.message}`);
+              // Keep original location if move fails — file stays in custom-documents
             }
 
             await DocumentUpload.create(userId, doc.location);
