@@ -541,29 +541,3 @@ module.exports = {
   hotdirPath,
   sanitizeFileName,
 };
-urns true if the metadata object has all the required fields, false otherwise
- */
-function hasRequiredMetadata(metadata = {}) {
-  return REQUIRED_FILE_OBJECT_FIELDS.every((field) =>
-    metadata.hasOwnProperty(field)
-  );
-}
-
-module.exports = {
-  findDocumentInDocuments,
-  cachedVectorInformation,
-  viewLocalFiles,
-  purgeSourceDocument,
-  purgeVectorCache,
-  storeVectorResult,
-  fileData,
-  normalizePath,
-  isWithin,
-  documentsPath,
-  directUploadsPath,
-  hasVectorCachedFiles,
-  purgeEntireVectorCache,
-  getDocumentsByFolder,
-  hotdirPath,
-  sanitizeFileName,
-};
