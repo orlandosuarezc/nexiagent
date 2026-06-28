@@ -31,7 +31,7 @@ export default function SettingsButton() {
     return (
       <div className="flex w-fit">
         <Link
-          to={paths.settings.chats()}
+          to={paths.settings.embedChatWidgets()}
           className="transition-all duration-300 p-2 rounded-full bg-theme-sidebar-footer-icon hover:bg-theme-sidebar-footer-icon-hover"
           aria-label="Historial de chats"
           data-tooltip-id="footer-item"

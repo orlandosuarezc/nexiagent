@@ -172,7 +172,7 @@ const router = createBrowserRouter([
           const { default: ChatEmbedWidgets } = await import(
             "@/pages/GeneralSettings/ChatEmbedWidgets"
           );
-          return { element: <AdminRoute Component={ChatEmbedWidgets} /> };
+          return { element: <PrivateRoute Component={ChatEmbedWidgets} /> };
         },
       },
       // Manager routes

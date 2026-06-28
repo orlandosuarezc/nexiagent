@@ -2,6 +2,7 @@ const { EmbedChats } = require("../models/embedChats");
 const { EmbedConfig } = require("../models/embedConfig");
 const { EventLogs } = require("../models/eventLogs");
 const { reqBody, userFromSession } = require("../utils/http");
+const { WorkspaceUser } = require("../models/workspaceUsers");
 const { validEmbedConfigId } = require("../utils/middleware/embedMiddleware");
 const {
   flexUserRoleValid,
@@ -92,17 +93,27 @@ function embedManagementEndpoints(app) {
 
   app.post(
     "/embed/chats",
-    [chatHistoryViewable, validatedRequest, flexUserRoleValid([ROLES.admin])],
+    [chatHistoryViewable, validatedRequest, flexUserRoleValid([ROLES.all])],
     async (request, response) => {
       try {
         const { offset = 0, limit = 20 } = reqBody(request);
+        const sessionUser = await userFromSession(request, response);
+        const isDefaultUser = sessionUser?.role === ROLES.default;
+
+        let clause = {};
+        if (isDefaultUser) {
+          const wsRows = await WorkspaceUser.where({ user_id: sessionUser.id });
+          const workspaceIds = wsRows.map((r) => r.workspace_id);
+          clause = { embed_config: { workspace_id: { in: workspaceIds } } };
+        }
+
         const embedChats = await EmbedChats.whereWithEmbedAndWorkspace(
-          {},
+          clause,
           limit,
           { id: "desc" },
           offset * limit
         );
-        const totalChats = await EmbedChats.count();
+        const totalChats = await EmbedChats.count(clause);
         const hasPages = totalChats > (offset + 1) * limit;
         response.status(200).json({ chats: embedChats, hasPages, totalChats });
       } catch (e) {
