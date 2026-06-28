@@ -488,6 +488,8 @@ function systemEndpoints(app) {
       try {
         const { name } = reqBody(request);
         await purgeFolder(name);
+        // Remove folder sentinel from document_uploads so it stops appearing for its owner.
+        await DocumentUpload.deleteByDocpath(`${name}/`);
         response.sendStatus(200).end();
       } catch (e) {
         console.error(e.message, e);

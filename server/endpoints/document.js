@@ -7,6 +7,7 @@ const {
   canUploadDocuments,
 } = require("../utils/middleware/multiUserProtected");
 const { validatedRequest } = require("../utils/middleware/validatedRequest");
+const { DocumentUpload } = require("../models/documentUpload");
 const fs = require("fs");
 const path = require("path");
 
@@ -31,6 +32,12 @@ function documentEndpoints(app) {
         }
 
         fs.mkdirSync(storagePath, { recursive: true });
+
+        // Register folder ownership so default-role users can see empty folders.
+        // Sentinel docpath uses a trailing slash: "foldername/"
+        const userId = response.locals?.user?.id;
+        if (userId) await DocumentUpload.create(userId, `${normalizePath(name)}/`);
+
         response.status(200).json({ success: true, message: null });
       } catch (e) {
         console.error(e);

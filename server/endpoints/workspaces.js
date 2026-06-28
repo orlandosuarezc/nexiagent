@@ -6,7 +6,7 @@ const {
   userFromSession,
   safeJsonParse,
 } = require("../utils/http");
-const { normalizePath, isWithin } = require("../utils/files");
+const { normalizePath, isWithin, documentsPath } = require("../utils/files");
 const { Workspace } = require("../models/workspace");
 const { Document } = require("../models/documents");
 const { DocumentVectors } = require("../models/vectors");
@@ -150,19 +150,51 @@ function workspaceEndpoints(app) {
         );
         await Telemetry.sendTelemetry("document_uploaded");
         const userId = response.locals?.user?.id;
-        console.log(`[upload] userId=${userId} role=${response.locals?.user?.role} documents=${JSON.stringify(documents?.map(d => d?.location))}`);
+        const userRole = response.locals?.user?.role;
         await EventLogs.logEvent(
           "document_uploaded",
           { documentName: originalname },
           userId
         );
-        // Track document ownership so default-role users only see their own files.
-        if (userId && documents?.length > 0) {
+
+        // For default-role users: move uploaded files to a personal folder
+        // (uploads-{userId}) instead of leaving them in the shared custom-documents.
+        if (userId && userRole === "default" && documents?.length > 0) {
+          const personalFolder = `uploads-${userId}`;
+          const personalFolderPath = path.join(documentsPath, personalFolder);
+          const sentinelDocpath = `${personalFolder}/`;
+
+          // Create personal folder on disk if it doesn't exist yet
+          if (!fs.existsSync(personalFolderPath))
+            fs.mkdirSync(personalFolderPath, { recursive: true });
+
           for (const doc of documents) {
-            if (doc?.location)
-              await DocumentUpload.create(userId, doc.location);
+            if (!doc?.location) continue;
+            const filename = path.basename(doc.location);
+            const srcPath = path.join(documentsPath, doc.location);
+            const destRelative = `${personalFolder}/${filename}`;
+            const destPath = path.join(documentsPath, destRelative);
+
+            try {
+              fs.renameSync(srcPath, destPath);
+              doc.location = destRelative; // update in-memory so callers see the new path
+            } catch (moveErr) {
+              console.error(`[upload] Failed to move ${doc.location} to personal folder:`, moveErr.message);
+              // Keep original location if move fails
+            }
+
+            await DocumentUpload.create(userId, doc.location);
+          }
+
+          // Register folder sentinel so empty personal folder stays visible
+          await DocumentUpload.create(userId, sentinelDocpath);
+        } else if (userId && documents?.length > 0) {
+          // Admin / manager: just track ownership without moving
+          for (const doc of documents) {
+            if (doc?.location) await DocumentUpload.create(userId, doc.location);
           }
         }
+
         response.status(200).json({ success: true, error: null });
       } catch (e) {
         console.error(e.message, e);
