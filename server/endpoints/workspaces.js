@@ -157,6 +157,7 @@ function workspaceEndpoints(app) {
           userId
         );
 
+        console.log(`[upload] userId=${userId} role=${userRole} documents=${JSON.stringify(documents?.map(d => ({ location: d?.location, id: d?.id })))}`);
         // For default-role users: move uploaded files to a personal folder
         // (uploads-{userId}) instead of leaving them in the shared custom-documents.
         if (userId && userRole === "default" && documents?.length > 0) {
