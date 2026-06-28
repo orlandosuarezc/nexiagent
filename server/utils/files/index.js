@@ -514,8 +514,24 @@ async function fileToPickerData({
   };
 }
 
+const REQUIRED_FILE_OBJECT_FIELDS = [
+  "name",
+  "type",
+  "url",
+  "title",
+  "docAuthor",
+  "description",
+  "docSource",
+  "chunkSource",
+  "published",
+  "wordCount",
+  "token_count_estimate",
+];
+
 /**
  * Checks if a given metadata object has all the required fields
+ * @param {{name: string, type: string, url: string, title: string, docAuthor: string, description: string, docSource: string, chunkSource: string, published: string, wordCount: number, token_count_estimate: number}} metadata
+ * @returns {boolean}
  */
 function hasRequiredMetadata(metadata = {}) {
   return REQUIRED_FILE_OBJECT_FIELDS.every((field) =>
