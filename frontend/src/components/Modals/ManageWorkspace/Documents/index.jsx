@@ -55,20 +55,16 @@ export default function DocumentSettings({ workspace }) {
     const documentsInWorkspace =
       currentWorkspace.documents.map((doc) => doc.docpath) || [];
 
-    // Documents that are not in the workspace.
-    // Backend already filters localFiles by user ownership for default-role users
-    // (via document_uploads table). No frontend filtering needed here.
+    // Left panel shows ALL documents the user owns (backend already filtered by ownership).
+    // Documents already embedded in the workspace remain visible here so the user
+    // can always see and manage their files, even after embedding them.
     const filteredAvailableDocs = {
       ...localFiles,
       items: localFiles.items.map((folder) => {
         if (folder.items && folder.type === "folder") {
           return {
             ...folder,
-            items: folder.items.filter(
-              (file) =>
-                file.type === "file" &&
-                !documentsInWorkspace.includes(`${folder.name}/${file.name}`)
-            ),
+            items: folder.items.filter((file) => file.type === "file"),
           };
         } else {
           return folder;
