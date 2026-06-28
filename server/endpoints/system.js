@@ -507,7 +507,10 @@ function systemEndpoints(app) {
         let allowedDocpaths = null;
         if (user?.role === "default") {
           const docpaths = await DocumentUpload.forUser(user.id);
+          console.log(`[local-files] userId=${user.id} role=${user.role} docpaths=${JSON.stringify(docpaths)} allowedDocpaths.size=${docpaths.length}`);
           allowedDocpaths = new Set(docpaths);
+        } else {
+          console.log(`[local-files] userId=${user?.id} role=${user?.role} → sin filtro (admin/manager o single-user)`);
         }
         const localFiles = await viewLocalFiles(allowedDocpaths);
         response.status(200).json({ localFiles });
