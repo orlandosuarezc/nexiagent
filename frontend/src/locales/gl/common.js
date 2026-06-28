@@ -799,6 +799,7 @@ const TRANSLATIONS = {
     description:
       "Estes son todos os chats e mensaxes gravadas que foron enviadas polos usuarios, ordenados pola súa data de creación.",
     export: "Exportar",
+    "viewing-text": "Vendo texto",
     table: {
       id: "ID",
       by: "Enviado por",
@@ -807,6 +808,9 @@ const TRANSLATIONS = {
       response: "Resposta",
       at: "Enviado o",
     },
+    delete: "Eliminar",
+    "delete-all": "Eliminar todos",
+    "delete-all-confirm": "Seguro que queres eliminar todos os chats? Esta acción é irreversible.",
   },
   customization: {
     interface: {
@@ -1032,6 +1036,9 @@ const TRANSLATIONS = {
       response: "Resposta",
       at: "Enviado o",
     },
+    delete: "Eliminar",
+    "delete-all": "Eliminar todos",
+    "delete-all-confirm": "Seguro que queres eliminar todos os chats? Esta acción é irreversible.",
   },
   event: {
     title: "Rexistros de eventos",
@@ -1206,6 +1213,14 @@ const TRANSLATIONS = {
       deselect_all: "Deseleccionar todo",
       remove_selected: "Eliminar seleccionados",
       save_embed: "Gardar e incrustar",
+      cached: "En caché",
+      name: "Nome",
+      status: "Estado",
+      "pin-to-workspace": "Fixar ao workspace",
+      "unpin-from-workspace": "Desafixar do workspace",
+      pinned: "Fixado",
+      unpin: "Desafixar",
+      "remove-from-workspace": "Quitar documento do workspace",
       "total-documents_one": "{{count}} documento",
       "total-documents_other": "{{count}} documentos",
     },
@@ -1956,6 +1971,10 @@ const TRANSLATIONS = {
       "routed-to-rule":
         "Enviado a <route>{{model}}</route> a través de <rule>{{ruleTitle}}</rule>",
     },
+  },
+  sidebar: {
+    "new-thread": "Novo fío",
+    "starting-thread": "Iniciando fío...",
   },
 };
 

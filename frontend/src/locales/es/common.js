@@ -798,6 +798,7 @@ const TRANSLATIONS = {
     description:
       "Estos son todos los chats y mensajes grabados que han sido enviados por los usuarios, ordenados por su fecha de creación.",
     export: "Exportar",
+    "viewing-text": "Viendo texto",
     table: {
       id: "ID",
       by: "Enviado por",
@@ -1031,6 +1032,9 @@ const TRANSLATIONS = {
       response: "Respuesta",
       at: "Enviado el",
     },
+    delete: "Borrar",
+    "delete-all": "Borrar todos",
+    "delete-all-confirm": "¿Seguro que quieres borrar todos los chats? Esta acción es irreversible.",
   },
   event: {
     title: "Registros de eventos",
@@ -1205,6 +1209,14 @@ const TRANSLATIONS = {
       deselect_all: "Deseleccionar todo",
       remove_selected: "Eliminar seleccionados",
       save_embed: "Guardar e incrustar",
+      cached: "En caché",
+      name: "Nombre",
+      status: "Estado",
+      "pin-to-workspace": "Fijar al workspace",
+      "unpin-from-workspace": "Desfijar del workspace",
+      pinned: "Fijado",
+      unpin: "Desfijar",
+      "remove-from-workspace": "Quitar documento del workspace",
       "total-documents_one": "{{count}} documento",
       "total-documents_other": "{{count}} documentos",
     },
@@ -1957,6 +1969,11 @@ const TRANSLATIONS = {
         "Enviado a <route>{{model}}</route> a través de <rule>{{ruleTitle}}</rule>",
     },
   },
+  sidebar: {
+    "new-thread": "Nueva conversación",
+    "starting-thread": "Iniciando conversación...",
+  },
 };
 
 export default TRANSLATIONS;
+  

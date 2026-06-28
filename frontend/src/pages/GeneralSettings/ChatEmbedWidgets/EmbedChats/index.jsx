@@ -122,9 +122,7 @@ export default function EmbedChatsView() {
 
   const handleDeleteAll = async () => {
     if (
-      !window.confirm(
-        "¿Seguro que quieres borrar todos los chats? Esta acción es irreversible."
-      )
+      !window.confirm(t("embed-chats.delete-all-confirm"))
     )
       return;
     const { success } = await Embed.deleteAllChats();
@@ -163,7 +161,7 @@ export default function EmbedChatsView() {
             className="flex items-center gap-x-2 px-4 py-1 rounded-lg text-white bg-red-500/20 hover:bg-red-500/40 border border-red-500/40 text-xs font-semibold h-[34px] w-fit"
           >
             <Trash size={18} weight="bold" />
-            Borrar todos
+            {t("embed-chats.delete-all")}
           </button>
           <div className="relative">
             <button

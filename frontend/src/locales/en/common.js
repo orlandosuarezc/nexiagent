@@ -768,6 +768,7 @@ const TRANSLATIONS = {
     description:
       "These are all the recorded chats and messages that have been sent by users ordered by their creation date.",
     export: "Export",
+    "viewing-text": "Viewing Text",
     table: {
       id: "ID",
       by: "Sent By",
@@ -1170,6 +1171,9 @@ const TRANSLATIONS = {
       response: "Response",
       at: "Sent At",
     },
+    delete: "Delete",
+    "delete-all": "Delete all",
+    "delete-all-confirm": "Are you sure you want to delete all chats? This action is irreversible.",
   },
   telegram: {
     title: "Telegram Bot",
@@ -1427,6 +1431,14 @@ const TRANSLATIONS = {
       deselect_all: "Deselect All",
       remove_selected: "Remove Selected",
       save_embed: "Save and Embed",
+      cached: "Cached",
+      name: "Name",
+      status: "Status",
+      "pin-to-workspace": "Pin to workspace",
+      "unpin-from-workspace": "Un-pin from workspace",
+      pinned: "Pinned",
+      unpin: "Un-pin",
+      "remove-from-workspace": "Remove document from workspace",
     },
     upload: {
       "processor-offline": "Document Processor Unavailable",
@@ -1884,6 +1896,10 @@ const TRANSLATIONS = {
         generic: "File",
       },
     },
+  },
+  sidebar: {
+    "new-thread": "New Thread",
+    "starting-thread": "Starting Thread...",
   },
 };
 

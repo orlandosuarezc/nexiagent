@@ -8,6 +8,7 @@ import { ArrowUUpLeft, Eye, File, PushPin } from "@phosphor-icons/react";
 import Workspace from "@/models/workspace";
 import showToast from "@/utils/toast";
 import System from "@/models/system";
+import { useTranslation } from "react-i18next";
 
 export default function WorkspaceFileRow({
   item,
@@ -121,6 +122,7 @@ export default function WorkspaceFileRow({
 }
 
 const PinItemToWorkspace = memo(({ workspace, docPath, item }) => {
+  const { t } = useTranslation();
   const [pinned, setPinned] = useState(
     item?.pinnedWorkspaces?.includes(workspace.id) || false
   );
@@ -165,14 +167,14 @@ const PinItemToWorkspace = memo(({ workspace, docPath, item }) => {
       className="group flex items-center ml-2 cursor-pointer"
       data-tooltip-id="pin-document"
       data-tooltip-content={
-        pinned ? "Un-pin from workspace" : "Pin to workspace"
+        pinned ? t("connectors.directory.unpin-from-workspace") : t("connectors.directory.pin-to-workspace")
       }
     >
       {pinned ? (
         <div className="bg-theme-settings-input-active group-hover:bg-red-500/20 rounded-3xl whitespace-nowrap">
           <p className="text-xs px-2 py-0.5 group-hover:text-red-500">
-            <span className="group-hover:hidden">Pinned</span>
-            <span className="hidden group-hover:inline">Un-pin</span>
+            <span className="group-hover:hidden">{t("connectors.directory.pinned")}</span>
+            <span className="hidden group-hover:inline">{t("connectors.directory.unpin")}</span>
           </p>
         </div>
       ) : (
@@ -257,11 +259,12 @@ const WatchForChanges = memo(({ workspace, docPath, item }) => {
 });
 
 const RemoveItemFromWorkspace = ({ item: _item, onClick }) => {
+  const { t } = useTranslation();
   return (
     <div>
       <ArrowUUpLeft
         data-tooltip-id="remove-document"
-        data-tooltip-content="Remove document from workspace"
+        data-tooltip-content={t("connectors.directory.remove-from-workspace")}
         onClick={onClick}
         className="text-base font-bold w-4 h-4 ml-2 flex-shrink-0 cursor-pointer"
       />

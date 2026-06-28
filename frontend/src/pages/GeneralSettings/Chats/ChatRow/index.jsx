@@ -5,6 +5,7 @@ import ModalWrapper from "@/components/ModalWrapper";
 import { useModal } from "@/hooks/useModal";
 import MarkdownRenderer from "../MarkdownRenderer";
 import { safeJsonParse } from "@/utils/request";
+import { useTranslation } from "react-i18next";
 
 export default function ChatRow({ chat, onDelete }) {
   const {
@@ -78,11 +79,12 @@ export default function ChatRow({ chat, onDelete }) {
   );
 }
 const TextPreview = ({ text, closeModal }) => {
+  const { t } = useTranslation();
   return (
     <div className="relative w-full md:max-w-2xl max-h-full">
       <div className="w-full max-w-2xl bg-theme-bg-secondary rounded-lg shadow border-2 border-theme-modal-border overflow-hidden">
         <div className="flex items-center justify-between p-6 border-b rounded-t border-theme-modal-border">
-          <h3 className="text-xl font-semibold text-white">Viewing Text</h3>
+          <h3 className="text-xl font-semibold text-white">{t("recorded.viewing-text")}</h3>
           <button
             onClick={closeModal}
             type="button"

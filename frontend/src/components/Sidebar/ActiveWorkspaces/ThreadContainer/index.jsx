@@ -6,12 +6,14 @@ import { useEffect, useState } from "react";
 import ThreadItem from "./ThreadItem";
 import { useParams } from "react-router-dom";
 import useHoverMetaKey from "./hooks";
+import { useTranslation } from "react-i18next";
 export const THREAD_RENAME_EVENT = "renameThread";
 
 export default function ThreadContainer({
   workspace,
   isVirtualThread = false,
 }) {
+  const { t } = useTranslation();
   const { threadSlug = null } = useParams();
   const [threads, setThreads] = useState([]);
   const [defaultThreadHasChats, setDefaultThreadHasChats] = useState(false);
@@ -150,7 +152,7 @@ export default function ThreadContainer({
           activeIdx={activeThreadIdx}
           isActive={true}
           workspace={workspace}
-          thread={{ slug: null, name: "*Nueva conversación", virtual: true }}
+          thread={{ slug: null, name: `*${t("sidebar.new-thread")}`, virtual: true }}
           hasNext={false}
         />
       )}
@@ -165,6 +167,7 @@ export default function ThreadContainer({
 }
 
 function NewThreadButton({ workspace }) {
+  const { t } = useTranslation();
   const [loading, setLoading] = useState(false);
   const onClick = async () => {
     setLoading(true);
@@ -203,11 +206,11 @@ function NewThreadButton({ workspace }) {
 
         {loading ? (
           <p className="text-left text-white light:text-theme-text-primary text-sm">
-            Starting Thread...
+            {t("sidebar.starting-thread")}
           </p>
         ) : (
           <p className="text-left text-white light:text-theme-text-primary text-sm font-semibold">
-            Nueva conversación
+            {t("sidebar.new-thread")}
           </p>
         )}
       </div>
