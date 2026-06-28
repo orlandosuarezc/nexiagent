@@ -4,10 +4,27 @@ import { isMobile } from "react-device-detect";
 import { CaretLeft, CaretRight } from "@phosphor-icons/react";
 import EmbedConfigsView from "./EmbedConfigs";
 import EmbedChatsView from "./EmbedChats";
+import useUser from "@/hooks/useUser";
 
 export default function ChatEmbedWidgets() {
+  const { user } = useUser();
   const [selectedView, setSelectedView] = useState("configs");
   const [showViewModal, setShowViewModal] = useState(false);
+
+  const isDefaultUser = user?.role === "default";
+
+  // Default users see only the chat history table, no navigation menu.
+  if (isDefaultUser) {
+    return (
+      <WidgetLayout>
+        <div className="flex-1 flex flex-col p-4 mt-10">
+          <div className="bg-theme-bg-secondary text-white rounded-xl flex-1 p-4 overflow-y-scroll no-scroll">
+            <EmbedChatsView />
+          </div>
+        </div>
+      </WidgetLayout>
+    );
+  }
 
   if (isMobile) {
     return (
