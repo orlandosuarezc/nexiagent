@@ -70,6 +70,8 @@ const User = {
       return String(bio);
     },
     canUploadDocuments: (value = true) => {
+      if (value === "false" || value === false || value === 0 || value === "0")
+        return false;
       return Boolean(value);
     },
   },
@@ -80,6 +82,8 @@ const User = {
       case "dailyMessageLimit":
         return value === null ? null : Number(value);
       case "canUploadDocuments":
+        if (value === "false" || value === false || value === 0 || value === "0")
+          return false;
         return Boolean(value);
       default:
         return String(value);

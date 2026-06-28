@@ -1224,9 +1224,7 @@ function systemEndpoints(app) {
       if (bio) updates.bio = String(bio);
 
       if (Object.keys(updates).length === 0) {
-        response
-          .status(400)
-          .json({ success: false, error: "No updates provided" });
+        response.status(200).json({ success: true, error: null });
         return;
       }
 
