@@ -37,6 +37,7 @@ const { Telemetry } = require("../models/telemetry");
 const { ApiKey } = require("../models/apiKeys");
 const { getCustomModels } = require("../utils/helpers/customModels");
 const { WorkspaceChats } = require("../models/workspaceChats");
+const { WorkspaceUser } = require("../models/workspaceUsers");
 const {
   flexUserRoleValid,
   ROLES,
@@ -1139,8 +1140,18 @@ function systemEndpoints(app) {
         const sessionUser = await userFromSession(request, response);
         const isDefaultUser = sessionUser?.role === ROLES.default;
 
-        // Default users only see their own chats; admin/manager see all.
-        const clause = isDefaultUser ? { user_id: sessionUser.id } : {};
+        // Default users see chats from their assigned workspaces (includes
+        // embed widget chats where user_id is null but workspaceId matches).
+        // Admin/manager see all chats unfiltered.
+        let clause = {};
+        if (isDefaultUser) {
+          const wsRows = await WorkspaceUser.where({
+            user_id: sessionUser.id,
+          });
+          const workspaceIds = wsRows.map((r) => r.workspace_id);
+          clause = { workspaceId: { in: workspaceIds } };
+        }
+
         const chats = await WorkspaceChats.whereWithData(
           clause,
           limit,
@@ -1160,10 +1171,40 @@ function systemEndpoints(app) {
 
   app.delete(
     "/system/workspace-chats/:id",
-    [validatedRequest, flexUserRoleValid([ROLES.admin, ROLES.manager])],
+    [validatedRequest, flexUserRoleValid([ROLES.all])],
     async (request, response) => {
       try {
         const { id } = request.params;
+        const sessionUser = await userFromSession(request, response);
+        const isDefaultUser = sessionUser?.role === ROLES.default;
+
+        if (isDefaultUser) {
+          // Default users cannot bulk-delete and can only delete chats
+          // belonging to their own assigned workspaces.
+          if (Number(id) === -1) {
+            return response
+              .status(403)
+              .json({ success: false, error: "Not permitted." });
+          }
+          const chat = await WorkspaceChats.get({ id: Number(id) });
+          if (!chat) {
+            return response
+              .status(404)
+              .json({ success: false, error: "Chat not found." });
+          }
+          const membership = await WorkspaceUser.get({
+            user_id: sessionUser.id,
+            workspace_id: chat.workspaceId,
+          });
+          if (!membership) {
+            return response
+              .status(403)
+              .json({ success: false, error: "Not permitted." });
+          }
+          await WorkspaceChats.delete({ id: Number(id) });
+          return response.json({ success: true, error: null });
+        }
+
         Number(id) === -1
           ? await WorkspaceChats.delete({}, true)
           : await WorkspaceChats.delete({ id: Number(id) });

@@ -33,9 +33,9 @@ export default function SettingsButton() {
         <Link
           to={paths.settings.chats()}
           className="transition-all duration-300 p-2 rounded-full bg-theme-sidebar-footer-icon hover:bg-theme-sidebar-footer-icon-hover"
-          aria-label="Mis chats"
+          aria-label="Historial de chats"
           data-tooltip-id="footer-item"
-          data-tooltip-content="Mis chats"
+          data-tooltip-content="Historial de chats"
         >
           <ChatsTeardrop
             className="h-5 w-5 text-white light:text-slate-800"
