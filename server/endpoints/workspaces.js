@@ -159,8 +159,9 @@ function workspaceEndpoints(app) {
 
         // For default-role users: move uploaded files to a personal folder
         // (uploads-{userId}) instead of leaving them in the shared custom-documents.
+        const username = response.locals?.user?.username;
         if (userId && userRole === "default" && documents?.length > 0) {
-          const personalFolder = `uploads-${userId}`;
+          const personalFolder = `uploads-${username ?? userId}`;
           const personalFolderPath = path.join(documentsPath, personalFolder);
           const sentinelDocpath = `${personalFolder}/`;
 

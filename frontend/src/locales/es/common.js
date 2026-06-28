@@ -1220,7 +1220,7 @@ const TRANSLATIONS = {
       fetching: "Obteniendo...",
       "fetch-website": "Obtener sitio web",
       "privacy-notice":
-        "Estos archivos se subirán al procesador de documentos que se ejecuta en esta instancia de AnythingLLM. Estos archivos no se envían ni se comparten con terceros.",
+        "Estos archivos se subirán al procesador de documentos que se ejecuta en esta instancia de Nexiagent. Estos archivos no se envían ni se comparten con terceros.",
     },
     pinning: {
       what_pinning: "¿Qué es fijar documentos?",

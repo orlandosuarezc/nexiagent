@@ -14,7 +14,7 @@ export default function WebsiteDepthOptions() {
 
     try {
       setLoading(true);
-      showToast("Scraping website - this may take a while.", "info", {
+      showToast("Scrapeando web, esto puede tardar un momento...", "info", {
         clear: true,
         autoClose: false,
       });
@@ -32,10 +32,7 @@ export default function WebsiteDepthOptions() {
       }
 
       showToast(
-        `Successfully scraped ${data.length} ${pluralize(
-          "page",
-          data.length
-        )}!`,
+        `¡${data.length} ${pluralize("página", data.length)} scrapeada${data.length !== 1 ? "s" : ""} con éxito!`,
         "success",
         { clear: true }
       );
