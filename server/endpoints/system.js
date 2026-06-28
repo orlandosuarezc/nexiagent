@@ -453,7 +453,7 @@ function systemEndpoints(app) {
 
   app.delete(
     "/system/remove-document",
-    [validatedRequest, flexUserRoleValid([ROLES.admin, ROLES.manager])],
+    [validatedRequest, canUploadDocuments],
     async (request, response) => {
       try {
         const { name } = reqBody(request);
@@ -468,7 +468,7 @@ function systemEndpoints(app) {
 
   app.delete(
     "/system/remove-documents",
-    [validatedRequest, flexUserRoleValid([ROLES.admin, ROLES.manager])],
+    [validatedRequest, canUploadDocuments],
     async (request, response) => {
       try {
         const { names } = reqBody(request);
@@ -483,7 +483,7 @@ function systemEndpoints(app) {
 
   app.delete(
     "/system/remove-folder",
-    [validatedRequest, flexUserRoleValid([ROLES.admin, ROLES.manager])],
+    [validatedRequest, canUploadDocuments],
     async (request, response) => {
       try {
         const { name } = reqBody(request);

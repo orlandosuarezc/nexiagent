@@ -150,6 +150,7 @@ function workspaceEndpoints(app) {
         );
         await Telemetry.sendTelemetry("document_uploaded");
         const userId = response.locals?.user?.id;
+        console.log(`[upload] userId=${userId} role=${response.locals?.user?.role} documents=${JSON.stringify(documents?.map(d => d?.location))}`);
         await EventLogs.logEvent(
           "document_uploaded",
           { documentName: originalname },

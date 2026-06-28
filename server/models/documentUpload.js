@@ -7,13 +7,19 @@ const DocumentUpload = {
    * @param {string} docpath - e.g. "custom-documents/file-uuid.json"
    */
   create: async function (userId, docpath) {
-    if (!userId || !docpath) return null;
+    console.log(`[DocumentUpload.create] userId=${userId} docpath=${docpath}`);
+    if (!userId || !docpath) {
+      console.warn(`[DocumentUpload.create] SKIPPED — missing userId or docpath`);
+      return null;
+    }
     try {
-      return await prisma.document_uploads.create({
+      const row = await prisma.document_uploads.create({
         data: { userId: Number(userId), docpath },
       });
+      console.log(`[DocumentUpload.create] OK — inserted id=${row.id}`);
+      return row;
     } catch (e) {
-      console.error("[DocumentUpload.create]", e.message);
+      console.error("[DocumentUpload.create] ERROR:", e.message);
       return null;
     }
   },
