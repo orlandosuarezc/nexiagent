@@ -127,6 +127,7 @@ function extensionEndpoints(app) {
         // item has a .location field (docpath).
         const userId = response.locals?.user?.id;
         const scrapedDocs = responseFromProcessor?.data ?? responseFromProcessor?.documents ?? [];
+        console.log(`[website-depth] userId=${userId} responseKeys=${Object.keys(responseFromProcessor ?? {}).join(",")} scrapedDocs.length=${scrapedDocs.length} locations=${JSON.stringify(scrapedDocs.map(d => d?.location))}`);
         if (userId && scrapedDocs.length > 0) {
           for (const doc of scrapedDocs) {
             if (doc?.location)
