@@ -150,7 +150,7 @@ export default function ThreadContainer({
           activeIdx={activeThreadIdx}
           isActive={true}
           workspace={workspace}
-          thread={{ slug: null, name: "*New Thread", virtual: true }}
+          thread={{ slug: null, name: "*Nueva conversación", virtual: true }}
           hasNext={false}
         />
       )}
@@ -207,7 +207,7 @@ function NewThreadButton({ workspace }) {
           </p>
         ) : (
           <p className="text-left text-white light:text-theme-text-primary text-sm font-semibold">
-            New Thread
+            Nueva conversación
           </p>
         )}
       </div>

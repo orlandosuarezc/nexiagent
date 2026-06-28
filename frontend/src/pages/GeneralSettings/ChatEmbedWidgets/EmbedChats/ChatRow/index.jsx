@@ -27,7 +27,7 @@ export default function ChatRow({ chat, onDelete }) {
   const handleDelete = async () => {
     if (
       !window.confirm(
-        `Are you sure you want to delete this chat?\n\nThis action is irreversible.`
+        `¿Seguro que quieres eliminar este chat? Esta acción es irreversible.`
       )
     )
       return false;
@@ -75,7 +75,7 @@ export default function ChatRow({ chat, onDelete }) {
             className="group text-xs font-medium text-theme-text-secondary px-2 py-1 rounded-lg hover:bg-theme-button-delete-hover-bg"
           >
             <span className="group-hover:text-theme-button-delete-hover-text">
-              Delete
+              Borrar
             </span>
           </button>
         </td>
