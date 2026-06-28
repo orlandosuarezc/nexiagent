@@ -17,7 +17,6 @@ import CommunityHubIcon from "@/media/illustrations/community-hub.png";
 import useUser from "@/hooks/useUser";
 import { isMobile } from "react-device-detect";
 import Footer from "../Footer";
-import SettingsButton from "../SettingsButton";
 import { Link } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import showToast from "@/utils/toast";
@@ -178,9 +177,6 @@ export default function SettingsSidebar() {
               </div>
             </div>
             <div className="absolute bottom-0 left-0 right-0 pt-4 pb-3 rounded-b-[16px] bg-theme-bg-sidebar bg-opacity-80 backdrop-filter backdrop-blur-md z-10">
-              <div className="flex justify-center mb-1">
-                <SettingsButton />
-              </div>
               <Footer />
             </div>
           </div>

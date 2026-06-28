@@ -297,7 +297,7 @@ const System = {
       ? safeJsonParse(cache, { data: [], lastFetched: 0 })
       : { data: [], lastFetched: 0 };
 
-    if (!!data && Date.now() - lastFetched < 3_600_000)
+    if (Array.isArray(data) && data.length > 0 && Date.now() - lastFetched < 3_600_000)
       return { footerData: data, error: null };
 
     const { footerData, error } = await fetch(

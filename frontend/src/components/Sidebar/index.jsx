@@ -67,9 +67,6 @@ export default function Sidebar() {
                   </div>
                 </div>
                 <div className="absolute bottom-0 left-0 right-0 pb-3 rounded-b-[16px] bg-theme-bg-sidebar light:bg-slate-200 bg-opacity-80 backdrop-filter backdrop-blur-md z-10">
-                  <div className="flex justify-center mb-1">
-                    <SettingsButton />
-                  </div>
                   <Footer />
                 </div>
               </div>
