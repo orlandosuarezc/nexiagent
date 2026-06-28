@@ -37,6 +37,7 @@ const { Telemetry } = require("../models/telemetry");
 const { ApiKey } = require("../models/apiKeys");
 const { getCustomModels } = require("../utils/helpers/customModels");
 const { WorkspaceChats } = require("../models/workspaceChats");
+const { WorkspaceUser } = require("../models/workspaceUsers");
 const {
   flexUserRoleValid,
   ROLES,
@@ -1175,12 +1176,22 @@ function systemEndpoints(app) {
     [
       chatHistoryViewable,
       validatedRequest,
-      flexUserRoleValid([ROLES.manager, ROLES.admin]),
+      flexUserRoleValid([ROLES.all]),
     ],
     async (request, response) => {
       try {
         const { type = "jsonl", chatType = "workspace" } = request.query;
-        const { contentType, data } = await exportChatsAsType(type, chatType);
+        const sessionUser = await userFromSession(request, response);
+        const isDefaultUser = sessionUser?.role === ROLES.default;
+
+        let clause = {};
+        if (isDefaultUser && chatType === "embed") {
+          const wsRows = await WorkspaceUser.where({ user_id: sessionUser.id });
+          const workspaceIds = wsRows.map((r) => r.workspace_id);
+          clause = { embed_config: { workspace_id: { in: workspaceIds } } };
+        }
+
+        const { contentType, data } = await exportChatsAsType(type, chatType, clause);
         await EventLogs.logEvent(
           "exported_chats",
           {

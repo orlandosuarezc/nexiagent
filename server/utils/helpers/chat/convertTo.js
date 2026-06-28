@@ -42,7 +42,11 @@ async function convertToJSONL(workspaceChatsMap) {
     .join("\n");
 }
 
-async function prepareChatsForExport(format = "jsonl", chatType = "workspace") {
+async function prepareChatsForExport(
+  format = "jsonl",
+  chatType = "workspace",
+  clause = {}
+) {
   if (!exportMap.hasOwnProperty(format))
     throw new Error(`Invalid export type: ${format}`);
 
@@ -53,7 +57,7 @@ async function prepareChatsForExport(format = "jsonl", chatType = "workspace") {
     });
   } else if (chatType === "embed") {
     chats = await EmbedChats.whereWithEmbedAndWorkspace(
-      {},
+      clause,
       null,
       {
         id: "asc",
@@ -213,11 +217,15 @@ function escapeCsv(str) {
   return `"${str.replace(/"/g, '""').replace(/\n/g, " ")}"`;
 }
 
-async function exportChatsAsType(format = "jsonl", chatType = "workspace") {
+async function exportChatsAsType(
+  format = "jsonl",
+  chatType = "workspace",
+  clause = {}
+) {
   const { contentType, func } = exportMap.hasOwnProperty(format)
     ? exportMap[format]
     : exportMap.jsonl;
-  const chats = await prepareChatsForExport(format, chatType);
+  const chats = await prepareChatsForExport(format, chatType, clause);
   return {
     contentType,
     data: await func(chats),

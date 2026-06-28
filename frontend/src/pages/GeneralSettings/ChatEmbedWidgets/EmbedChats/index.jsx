@@ -141,7 +141,7 @@ export default function EmbedChatsView() {
           <p className="text-lg leading-6 font-bold text-theme-text-primary">
             {t("embed-chats.title")}
           </p>
-          {!isDefaultUser && <div className="relative">
+          <div className="relative">
             <button
               ref={openMenuButton}
               onClick={toggleMenu}
@@ -172,7 +172,7 @@ export default function EmbedChatsView() {
                 ))}
               </div>
             </div>
-          </div>}
+          </div>
         </div>
         <p className="text-xs leading-[18px] font-base text-theme-text-secondary mt-2">
           {t("embed-chats.description")}

@@ -125,10 +125,34 @@ function embedManagementEndpoints(app) {
 
   app.delete(
     "/embed/chats/:chatId",
-    [validatedRequest, flexUserRoleValid([ROLES.admin])],
+    [validatedRequest, flexUserRoleValid([ROLES.all])],
     async (request, response) => {
       try {
         const { chatId } = request.params;
+        const sessionUser = await userFromSession(request, response);
+        const isDefaultUser = sessionUser?.role === ROLES.default;
+
+        if (isDefaultUser) {
+          const chat = await EmbedChats.get({ id: Number(chatId) });
+          if (!chat)
+            return response
+              .status(404)
+              .json({ success: false, error: "Chat not found." });
+          const embedConfig = await EmbedConfig.get({ id: chat.embed_id });
+          if (!embedConfig)
+            return response
+              .status(404)
+              .json({ success: false, error: "Embed config not found." });
+          const membership = await WorkspaceUser.get({
+            user_id: sessionUser.id,
+            workspace_id: embedConfig.workspace_id,
+          });
+          if (!membership)
+            return response
+              .status(403)
+              .json({ success: false, error: "Not permitted." });
+        }
+
         await EmbedChats.delete({ id: Number(chatId) });
         response.status(200).json({ success: true, error: null });
       } catch (e) {
