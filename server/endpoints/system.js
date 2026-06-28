@@ -1132,21 +1132,22 @@ function systemEndpoints(app) {
 
   app.post(
     "/system/workspace-chats",
-    [
-      chatHistoryViewable,
-      validatedRequest,
-      flexUserRoleValid([ROLES.admin, ROLES.manager]),
-    ],
+    [chatHistoryViewable, validatedRequest, flexUserRoleValid([ROLES.all])],
     async (request, response) => {
       try {
         const { offset = 0, limit = 20 } = reqBody(request);
+        const sessionUser = await userFromSession(request, response);
+        const isDefaultUser = sessionUser?.role === ROLES.default;
+
+        // Default users only see their own chats; admin/manager see all.
+        const clause = isDefaultUser ? { user_id: sessionUser.id } : {};
         const chats = await WorkspaceChats.whereWithData(
-          {},
+          clause,
           limit,
           offset * limit,
           { id: "desc" }
         );
-        const totalChats = await WorkspaceChats.count();
+        const totalChats = await WorkspaceChats.count(clause);
         const hasPages = totalChats > (offset + 1) * limit;
 
         response.status(200).json({ chats: chats, hasPages, totalChats });
