@@ -64,6 +64,17 @@ const Embed = {
         return [];
       });
   },
+  deleteAllChats: async () => {
+    return await fetch(`${API_BASE}/embed/chats`, {
+      method: "DELETE",
+      headers: baseHeaders(),
+    })
+      .then((res) => res.json())
+      .catch((e) => {
+        console.error(e);
+        return { success: false, error: e.message };
+      });
+  },
   deleteChat: async (chatId) => {
     return await fetch(`${API_BASE}/embed/chats/${chatId}`, {
       method: "DELETE",

@@ -72,6 +72,42 @@ function embedManagementEndpoints(app) {
   );
 
   app.delete(
+    "/embed/chats",
+    [validatedRequest, flexUserRoleValid([ROLES.all])],
+    async (request, response) => {
+      try {
+        const sessionUser = await userFromSession(request, response);
+        const isDefaultUser = sessionUser?.role === ROLES.default;
+
+        if (isDefaultUser) {
+          const wsRows = await WorkspaceUser.where({ user_id: sessionUser.id });
+          const workspaceIds = wsRows.map((r) => r.workspace_id);
+          const clause = {
+            embed_config: { workspace_id: { in: workspaceIds } },
+          };
+          const matchingChats = await EmbedChats.whereWithEmbedAndWorkspace(
+            clause,
+            null,
+            { id: "asc" },
+            null
+          );
+          const ids = matchingChats.map((c) => c.id);
+          if (ids.length > 0) {
+            await EmbedChats.delete({ id: { in: ids } });
+          }
+        } else {
+          await EmbedChats.delete({});
+        }
+
+        response.status(200).json({ success: true, error: null });
+      } catch (e) {
+        console.error(e);
+        response.sendStatus(500).end();
+      }
+    }
+  );
+
+  app.delete(
     "/embed/:embedId",
     [validatedRequest, flexUserRoleValid([ROLES.admin]), validEmbedConfigId],
     async (request, response) => {

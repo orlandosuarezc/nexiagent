@@ -5,7 +5,7 @@ import useQuery from "@/hooks/useQuery";
 import ChatRow from "./ChatRow";
 import Embed from "@/models/embed";
 import { useTranslation } from "react-i18next";
-import { CaretDown, Download } from "@phosphor-icons/react";
+import { CaretDown, Download, Trash } from "@phosphor-icons/react";
 import showToast from "@/utils/toast";
 import { saveAs } from "file-saver";
 import System from "@/models/system";
@@ -120,6 +120,23 @@ export default function EmbedChatsView() {
     setChats((prevChats) => prevChats.filter((chat) => chat.id !== chatId));
   };
 
+  const handleDeleteAll = async () => {
+    if (
+      !window.confirm(
+        "¿Seguro que quieres borrar todos los chats? Esta acción es irreversible."
+      )
+    )
+      return;
+    const { success } = await Embed.deleteAllChats();
+    if (success) {
+      setChats([]);
+      setCanNext(false);
+      showToast("Todos los chats han sido eliminados.", "success");
+    } else {
+      showToast("Error al eliminar los chats.", "error");
+    }
+  };
+
   if (loading) {
     return (
       <Skeleton.default
@@ -141,6 +158,13 @@ export default function EmbedChatsView() {
           <p className="text-lg leading-6 font-bold text-theme-text-primary">
             {t("embed-chats.title")}
           </p>
+          <button
+            onClick={handleDeleteAll}
+            className="flex items-center gap-x-2 px-4 py-1 rounded-lg text-white bg-red-500/20 hover:bg-red-500/40 border border-red-500/40 text-xs font-semibold h-[34px] w-fit"
+          >
+            <Trash size={18} weight="bold" />
+            Borrar todos
+          </button>
           <div className="relative">
             <button
               ref={openMenuButton}
