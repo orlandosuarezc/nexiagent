@@ -294,7 +294,7 @@ const router = createBrowserRouter([
           const { default: GeneralChats } = await import(
             "@/pages/GeneralSettings/Chats"
           );
-          return { element: <ManagerRoute Component={GeneralChats} /> };
+          return { element: <PrivateRoute Component={GeneralChats} /> };
         },
       },
       {
