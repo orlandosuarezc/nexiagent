@@ -128,6 +128,7 @@ function extensionEndpoints(app) {
         const userId = response.locals?.user?.id;
         const scrapedDocs = responseFromProcessor?.data ?? responseFromProcessor?.documents ?? [];
         console.log(`[website-depth] userId=${userId} responseKeys=${Object.keys(responseFromProcessor ?? {}).join(",")} scrapedDocs.length=${scrapedDocs.length} locations=${JSON.stringify(scrapedDocs.map(d => d?.location))}`);
+        if (scrapedDocs.length > 0) console.log(`[website-depth] scrapedDocs[0] keys=${Object.keys(scrapedDocs[0] ?? {}).join(",")} sample=${JSON.stringify(scrapedDocs[0])}`);
         if (userId && scrapedDocs.length > 0) {
           for (const doc of scrapedDocs) {
             if (doc?.location)

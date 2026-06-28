@@ -173,12 +173,12 @@ async function bulkScrapePages(links, outFolderPath) {
         token_count_estimate: tokenizeString(content),
       };
 
-      writeToServerDocuments({
+      const written = writeToServerDocuments({
         data,
         filename: data.title,
         destinationOverride: outFolderPath,
       });
-      scrapedData.push(data);
+      scrapedData.push({ ...data, location: written?.location ?? null });
 
       console.log(`Successfully scraped ${link}.`);
     } catch (error) {
