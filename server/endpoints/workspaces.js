@@ -176,11 +176,13 @@ function workspaceEndpoints(app) {
             const destRelative = `${personalFolder}/${filename}`;
             const destPath = path.join(documentsPath, destRelative);
 
+            console.log(`[upload:move] src=${srcPath} dest=${destPath} srcExists=${fs.existsSync(srcPath)}`);
             try {
               fs.renameSync(srcPath, destPath);
               doc.location = destRelative; // update in-memory so callers see the new path
+              console.log(`[upload:move] OK → ${destRelative}`);
             } catch (moveErr) {
-              console.error(`[upload] Failed to move ${doc.location} to personal folder:`, moveErr.message);
+              console.error(`[upload:move] FAILED code=${moveErr.code} msg=${moveErr.message} src=${srcPath} dest=${destPath}`);
               // Keep original location if move fails
             }
 
