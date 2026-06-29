@@ -75,7 +75,7 @@ class MistralLLM {
     for (let attachment of attachments) {
       content.push({
         type: "image_url",
-        image_url: attachment.contentString,
+        image_url: { url: attachment.contentString },
       });
     }
     return content.flat();
