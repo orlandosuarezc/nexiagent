@@ -14,6 +14,7 @@ hljs.registerLanguage("svelte", hljsDefineSvelte);
 const markdown = markdownIt({
   html: Appearance.get("renderHTML") ?? false,
   typographer: true,
+  linkify: true,
   highlight: function (code, lang) {
     const uuid = v4();
     const theme =
