@@ -30,6 +30,7 @@ function embeddedEndpoints(app) {
           model = null,
           temperature = null,
           username = null,
+          attachments = [],
         } = reqBody(request);
 
         response.setHeader("Cache-Control", "no-cache");
@@ -38,12 +39,19 @@ function embeddedEndpoints(app) {
         response.setHeader("Connection", "keep-alive");
         response.flushHeaders();
 
-        await streamChatWithForEmbed(response, embed, message, sessionId, {
-          promptOverride: prompt,
-          modelOverride: model,
-          temperatureOverride: temperature,
-          username,
-        });
+        await streamChatWithForEmbed(
+          response,
+          embed,
+          message,
+          sessionId,
+          {
+            promptOverride: prompt,
+            modelOverride: model,
+            temperatureOverride: temperature,
+            username,
+          },
+          Array.isArray(attachments) ? attachments : []
+        );
         await Telemetry.sendTelemetry("embed_sent_chat", {
           multiUserMode: multiUserMode(response),
           LLMSelection: process.env.LLM_PROVIDER || "openai",

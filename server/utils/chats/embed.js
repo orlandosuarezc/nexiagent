@@ -16,7 +16,9 @@ async function streamChatWithForEmbed(
   message,
   /** @type {String} */
   sessionId,
-  { promptOverride, modelOverride, temperatureOverride, username }
+  { promptOverride, modelOverride, temperatureOverride, username },
+  /** @type {import("../../utils/helpers").Attachment[]} */
+  attachments = []
 ) {
   // Automatic mode is NOT valid for embeds, so we default to chat mode.
   let chatMode = embed.chat_mode ?? "chat";
@@ -175,6 +177,7 @@ async function streamChatWithForEmbed(
       userPrompt: message,
       contextTexts,
       chatHistory,
+      attachments,
     },
     rawHistory
   );
