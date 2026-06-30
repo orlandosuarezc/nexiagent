@@ -574,6 +574,7 @@ const STATUS_STYLES = {
 };
 
 function EmbeddingFileRow({ filename, status: fileStatus, onRemove }) {
+  const { t } = useTranslation();
   const { status, chunksProcessed = 0, totalChunks = 0 } = fileStatus;
   const displayName = getDisplayName(filename);
   const isEmbedding = status === "embedding";
@@ -611,7 +612,7 @@ function EmbeddingFileRow({ filename, status: fileStatus, onRemove }) {
             <p
               className={`text-xs italic whitespace-nowrap flex gap-2 justify-center items-center ${STATUS_STYLES[status]?.textColor}`}
             >
-              {STATUS_STYLES[status]?.label || "Queued"}
+              {t(`connectors.directory.${status || "queued"}`)}
             </p>
             {onRemove && (
               <button

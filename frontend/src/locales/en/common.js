@@ -1438,6 +1438,10 @@ const TRANSLATIONS = {
       "unpin-from-workspace": "Un-pin from workspace",
       pinned: "Pinned",
       unpin: "Un-pin",
+      "queued": "Queued",
+      "embedding": "Embedding",
+      "complete": "Complete",
+      "failed": "Failed",
       "remove-from-workspace": "Remove document from workspace",
     },
     upload: {

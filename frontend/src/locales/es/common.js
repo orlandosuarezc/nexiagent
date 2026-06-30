@@ -8,7 +8,7 @@ const TRANSLATIONS = {
     llm: {
       title: "Preferencia de LLM",
       description:
-        "AnythingLLM puede funcionar con muchos proveedores de LLM. Este será el servicio que gestionará el chat.",
+        "Nexiagent puede funcionar con muchos proveedores de LLM. Este será el servicio que gestionará el chat.",
     },
     userSetup: {
       title: "Configuración de usuario",
@@ -35,15 +35,15 @@ const TRANSLATIONS = {
         "Estos ajustes se pueden reconfigurar en cualquier momento en la configuración.",
     },
     survey: {
-      title: "Bienvenido a AnythingLLM",
+      title: "Bienvenido a Nexiagent",
       description:
-        "Ayúdanos a hacer que AnythingLLM se adapte a tus necesidades. Opcional.",
+        "Ayúdanos a hacer que Nexiagent se adapte a tus necesidades. Opcional.",
       email: "¿Cuál es tu correo electrónico?",
-      useCase: "¿Para qué usarás AnythingLLM?",
+      useCase: "¿Para qué usarás Nexiagent?",
       useCaseWork: "Para el trabajo",
       useCasePersonal: "Para uso personal",
       useCaseOther: "Otro",
-      comment: "¿Cómo te enteraste de AnythingLLM?",
+      comment: "¿Cómo te enteraste de Nexiagent?",
       commentPlaceholder:
         "Reddit, Twitter, GitHub, YouTube, etc. - ¡Haznos saber cómo nos encontraste!",
       skip: "Omitir encuesta",
@@ -98,7 +98,7 @@ const TRANSLATIONS = {
     "experimental-features": "Funciones experimentales",
     contact: "Contactar con soporte",
     "browser-extension": "Extensión del navegador",
-    "mobile-app": "AnythingLLM Móvil",
+    "mobile-app": "Nexiagent Móvil",
     "community-hub": {
       title: "Centro comunitario",
       trending: "Explora las tendencias más populares",
@@ -166,7 +166,7 @@ const TRANSLATIONS = {
       add: "Agregar nuevo mensaje",
       save: "Guardar mensajes",
       heading: "Explícame",
-      body: "los beneficios de AnythingLLM",
+      body: "los beneficios de Nexiagent",
     },
     delete: {
       title: "Eliminar espacio de trabajo",
@@ -773,7 +773,7 @@ const TRANSLATIONS = {
       "intelligent-skill-selection": {
         title: "Selección inteligente de habilidades",
         description:
-          "Permite el uso ilimitado de herramientas y reduce el consumo de tokens hasta en un 80% por consulta: AnythingLLM selecciona automáticamente las habilidades adecuadas para cada solicitud.",
+          "Permite el uso ilimitado de herramientas y reduce el consumo de tokens hasta en un 80% por consulta: Nexiagent selecciona automáticamente las habilidades adecuadas para cada solicitud.",
         "max-tools": {
           title: "Herramientas Max",
           description:
@@ -812,16 +812,16 @@ const TRANSLATIONS = {
     interface: {
       title: "Preferencias de la interfaz de usuario",
       description:
-        "Establece tus preferencias de la interfaz de usuario para AnythingLLM.",
+        "Establece tus preferencias de la interfaz de usuario para Nexiagent.",
     },
     branding: {
       title: "Marca y marca blanca",
       description:
-        "Personaliza tu instancia de AnythingLLM con tu propia marca.",
+        "Personaliza tu instancia de Nexiagent con tu propia marca.",
     },
     chat: {
       title: "Chat",
-      description: "Establece tus preferencias de chat para AnythingLLM.",
+      description: "Establece tus preferencias de chat para Nexiagent.",
       auto_submit: {
         title: "Envío automático de entrada de voz",
         description:
@@ -861,7 +861,7 @@ const TRANSLATIONS = {
       "display-language": {
         title: "Idioma de visualización",
         description:
-          "Selecciona el idioma preferido para renderizar la interfaz de usuario de AnythingLLM, cuando las traducciones estén disponibles.",
+          "Selecciona el idioma preferido para renderizar la interfaz de usuario de Nexiagent, cuando las traducciones estén disponibles.",
       },
       logo: {
         title: "Logotipo de la marca",
@@ -904,7 +904,7 @@ const TRANSLATIONS = {
   api: {
     title: "Claves de API",
     description:
-      "Las claves de API permiten al titular acceder y administrar programáticamente esta instancia de AnythingLLM.",
+      "Las claves de API permiten al titular acceder y administrar programáticamente esta instancia de Nexiagent.",
     link: "Leer la documentación de la API",
     generate: "Generar nueva clave de API",
     empty: "No se encontraron claves API",
@@ -918,7 +918,7 @@ const TRANSLATIONS = {
       close: "Cerrar",
       create: "Crear clave API",
       helper:
-        "Una vez creada, la clave API se puede usar para acceder y configurar esta instancia de AnythingLLM mediante programación.",
+        "Una vez creada, la clave API se puede usar para acceder y configurar esta instancia de Nexiagent mediante programación.",
       name: {
         label: "Nombre",
         placeholder: "Integración de producción",
@@ -943,7 +943,7 @@ const TRANSLATIONS = {
   llm: {
     title: "Preferencia de LLM",
     description:
-      "Estas son las credenciales y la configuración de tu proveedor preferido de chat e incrustación de LLM. Es importante que estas claves estén actualizadas y sean correctas, de lo contrario, AnythingLLM no funcionará correctamente.",
+      "Estas son las credenciales y la configuración de tu proveedor preferido de chat e incrustación de LLM. Es importante que estas claves estén actualizadas y sean correctas, de lo contrario, Nexiagent no funcionará correctamente.",
     provider: "Proveedor de LLM",
     providers: {
       azure_openai: {
@@ -965,7 +965,7 @@ const TRANSLATIONS = {
       "Estas son las credenciales y la configuración de tu proveedor de modelo de transcripción preferido. Es importante que estas claves estén actualizadas y sean correctas, de lo contrario, los archivos multimedia y el audio no se transcribirán.",
     provider: "Proveedor de transcripción",
     "warn-start":
-      "El uso del modelo local de Whisper en máquinas con RAM o CPU limitadas puede detener AnythingLLM al procesar archivos multimedia.",
+      "El uso del modelo local de Whisper en máquinas con RAM o CPU limitadas puede detener Nexiagent al procesar archivos multimedia.",
     "warn-recommend":
       "Recomendamos al menos 2 GB de RAM y subir archivos de menos de 10 MB.",
     "warn-end":
@@ -976,7 +976,7 @@ const TRANSLATIONS = {
     "desc-start":
       "Cuando se utiliza un LLM que no admite de forma nativa un motor de incrustación, es posible que debas especificar credenciales adicionales para la incrustación de texto.",
     "desc-end":
-      "La incrustación es el proceso de convertir texto en vectores. Estas credenciales son necesarias para convertir tus archivos y prompts en un formato que AnythingLLM pueda usar para procesar.",
+      "La incrustación es el proceso de convertir texto en vectores. Estas credenciales son necesarias para convertir tus archivos y prompts en un formato que Nexiagent pueda usar para procesar.",
     provider: {
       title: "Proveedor de incrustación",
     },
@@ -1002,7 +1002,7 @@ const TRANSLATIONS = {
   vector: {
     title: "Base de datos vectorial",
     description:
-      "Estas son las credenciales y la configuración de cómo funcionará tu instancia de AnythingLLM. Es importante que estas claves estén actualizadas y sean correctas.",
+      "Estas son las credenciales y la configuración de cómo funcionará tu instancia de Nexiagent. Es importante que estas claves estén actualizadas y sean correctas.",
     provider: {
       title: "Proveedor de base de datos vectorial",
       description: "No se necesita configuración para LanceDB.",
@@ -1050,7 +1050,7 @@ const TRANSLATIONS = {
   privacy: {
     title: "Privacidad y manejo de datos",
     description:
-      "Esta es tu configuración sobre cómo los proveedores de terceros conectados y AnythingLLM manejan tus datos.",
+      "Esta es tu configuración sobre cómo los proveedores de terceros conectados y Nexiagent manejan tus datos.",
     anonymous: "Telemetría anónima habilitada",
   },
   connectors: {
@@ -1216,6 +1216,10 @@ const TRANSLATIONS = {
       "unpin-from-workspace": "Desfijar del workspace",
       pinned: "Fijado",
       unpin: "Desfijar",
+      "queued": "En cola",
+      "embedding": "Procesando",
+      "complete": "Completado",
+      "failed": "Error",
       "remove-from-workspace": "Quitar documento del workspace",
       "total-documents_one": "{{count}} documento",
       "total-documents_other": "{{count}} documentos",
@@ -1237,17 +1241,17 @@ const TRANSLATIONS = {
     pinning: {
       what_pinning: "¿Qué es fijar documentos?",
       pin_explained_block1:
-        "Cuando <b>fijas</b> un documento en AnythingLLM, inyectaremos todo el contenido del documento en tu ventana de prompt para que tu LLM lo comprenda por completo.",
+        "Cuando <b>fijas</b> un documento en Nexiagent, inyectaremos todo el contenido del documento en tu ventana de prompt para que tu LLM lo comprenda por completo.",
       pin_explained_block2:
         "Esto funciona mejor con <b>modelos de gran contexto</b> o archivos pequeños que son críticos para su base de conocimientos.",
       pin_explained_block3:
-        "Si no obtienes las respuestas que deseas de AnythingLLM por defecto, fijar es una excelente manera de obtener respuestas de mayor calidad con un clic.",
+        "Si no obtienes las respuestas que deseas de Nexiagent por defecto, fijar es una excelente manera de obtener respuestas de mayor calidad con un clic.",
       accept: "Ok, entendido",
     },
     watching: {
       what_watching: "¿Qué hace observar un documento?",
       watch_explained_block1:
-        "Cuando <b>observas</b> un documento en AnythingLLM, sincronizaremos <i>automáticamente</i> el contenido de tu documento desde su fuente original a intervalos regulares. Esto actualizará automáticamente el contenido en cada espacio de trabajo donde se gestione este archivo.",
+        "Cuando <b>observas</b> un documento en Nexiagent, sincronizaremos <i>automáticamente</i> el contenido de tu documento desde su fuente original a intervalos regulares. Esto actualizará automáticamente el contenido en cada espacio de trabajo donde se gestione este archivo.",
       watch_explained_block2:
         "Esta función actualmente admite contenido en línea y no estará disponible para documentos subidos manualmente.",
       watch_explained_block3_start:
@@ -1390,7 +1394,7 @@ const TRANSLATIONS = {
         edit_description: "Actualiza el contenido de esta memoria.",
         label: "Memoria",
         placeholder:
-          "Por ejemplo, el nombre del usuario es Joe, el usuario trabaja en AnythingLLM, etc.",
+          "Por ejemplo, el nombre del usuario es Joe, el usuario trabaja en Nexiagent, etc.",
         create: "Crear",
         save: "Guardar",
         cancel: "Cancelar",
@@ -1528,7 +1532,7 @@ const TRANSLATIONS = {
         unauthenticated: {
           title: "Se requiere autenticación",
           description:
-            "Necesitas autenticarte con el Centro de la Comunidad de AnythingLLM antes de publicar elementos.",
+            "Necesitas autenticarte con el Centro de la Comunidad de Nexiagent antes de publicar elementos.",
           button: "Conectar al Centro de la Comunidad",
         },
       },
@@ -1552,7 +1556,7 @@ const TRANSLATIONS = {
     password: {
       title: "Protección con contraseña",
       description:
-        "Protege tu instancia de AnythingLLM con una contraseña. Si la olvidas, no hay método de recuperación, así que asegúrate de guardar esta contraseña.",
+        "Protege tu instancia de Nexiagent con una contraseña. Si la olvidas, no hay método de recuperación, así que asegúrate de guardar esta contraseña.",
       "password-label": "Contraseña de la instancia",
     },
   },
@@ -1566,7 +1570,7 @@ const TRANSLATIONS = {
   telegram: {
     title: "Bot de Telegram",
     description:
-      "Conecte su instancia de AnythingLLM a Telegram para poder conversar con sus espacios de trabajo desde cualquier dispositivo.",
+      "Conecte su instancia de Nexiagent a Telegram para poder conversar con sus espacios de trabajo desde cualquier dispositivo.",
     setup: {
       step1: {
         title: "Paso 1: Crea tu bot de Telegram.",
